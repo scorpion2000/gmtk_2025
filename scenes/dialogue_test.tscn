@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://bholp6j8krrml"]
+
+[ext_resource type="Script" uid="uid://cij1v0onpdti8" path="res://scripts/systems/dialogue_box.gd" id="1_gquwp"]
+
+[node name="DialogueTest" type="CanvasLayer"]
+
+[node name="Fast" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Fast Text"
+
+[node name="Normal" type="Button" parent="."]
+offset_top = 42.0
+offset_right = 78.0
+offset_bottom = 73.0
+text = "Normal Text"
+
+[node name="Slow" type="Button" parent="."]
+offset_top = 81.0
+offset_right = 82.0
+offset_bottom = 112.0
+text = "Slow Text"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_right = 300.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(300, 0)
+mouse_filter = 2
+script = ExtResource("1_gquwp")
+
+[node name="Panel" type="Panel" parent="Control"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_right = 300.0
+offset_bottom = 160.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[connection signal="pressed" from="Fast" to="Control" method="setText" binds= ["Fast Text Example", 5.0]]
+[connection signal="pressed" from="Normal" to="Control" method="setText" binds= ["Normal Text Example", 10.0]]
+[connection signal="pressed" from="Slow" to="Control" method="setText" binds= ["Slow Text Example", 20.0]]
