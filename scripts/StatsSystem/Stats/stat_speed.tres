@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Stat" load_steps=2 format=3 uid="uid://788h7wh4k84y"]
+
+[ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="1_7fm3p"]
+
+[resource]
+resource_name = "Speed"
+script = ExtResource("1_7fm3p")
+currentValue = 300.0
+minValue = 0.0
+maxValue = 9999.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"

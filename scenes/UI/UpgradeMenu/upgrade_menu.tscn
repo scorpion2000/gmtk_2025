@@ -1,0 +1,99 @@
+[gd_scene load_steps=7 format=3 uid="uid://cf6t2nxd3fq6q"]
+
+[ext_resource type="Script" uid="uid://gdhqyru6cbm2" path="res://scripts/UI/UpgradeMenu/upgrade_menu.gd" id="1_1tmyn"]
+[ext_resource type="PackedScene" uid="uid://sdfyq58n6lj0" path="res://scenes/UI/UpgradeMenu/upgrade_stat.tscn" id="1_8qoat"]
+[ext_resource type="Resource" uid="uid://xh8rwgnrd7ac" path="res://scripts/StatsSystem/Stats/player_stats.tres" id="2_0ujhq"]
+[ext_resource type="Resource" uid="uid://ck3pd1ewlqnqo" path="res://scripts/StatsSystem/Stats/stat_health.tres" id="4_ur2w5"]
+[ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/stat_speed.tres" id="5_lkyoy"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_2620x"]
+size = Vector2(30, 30)
+
+[node name="UpgradeMenu" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1tmyn")
+StatList = ExtResource("2_0ujhq")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HeaderLabel" type="Label" parent="VBox"]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Upgrade Shop"
+
+[node name="Margin" type="MarginContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBox/Margin"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="VBox/Margin/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="CurrencyImage" type="TextureRect" parent="VBox/Margin/VBoxContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+texture = SubResource("PlaceholderTexture2D_2620x")
+stretch_mode = 4
+
+[node name="CurrencyLabel" type="Label" parent="VBox/Margin/VBoxContainer/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "17,000"
+
+[node name="StatsContainer" type="VBoxContainer" parent="VBox/Margin/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HealthStat" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+UpgradeStat = ExtResource("4_ur2w5")
+
+[node name="SpeedStat" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+UpgradeStat = ExtResource("5_lkyoy")
+
+[node name="UpgradeStat3" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UpgradeStat7" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UpgradeStat8" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UpgradeStat4" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UpgradeStat5" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="UpgradeStat6" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3

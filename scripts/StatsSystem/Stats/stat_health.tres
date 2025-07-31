@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Stat" load_steps=2 format=3 uid="uid://ck3pd1ewlqnqo"]
+
+[ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="1_33nhu"]
+
+[resource]
+resource_name = "Health"
+script = ExtResource("1_33nhu")
+currentValue = 50.0
+minValue = 0.0
+maxValue = 9999.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
