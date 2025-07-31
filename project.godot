@@ -23,6 +23,15 @@ buses/default_bus_layout="res://addons/simple_menu/assets/default_bus_layout.tre
 
 Utilities="*res://addons/simple_menu/scenes/utilities.tscn"
 AudioManager="*res://addons/simple_menu/scenes/audio_manager.tscn"
+GlobalLoops="*res://scripts/global_loops.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/Hide/plugin.cfg")
+
+[global_group]
+
+UpgradeButton=""
 
 [input]
 

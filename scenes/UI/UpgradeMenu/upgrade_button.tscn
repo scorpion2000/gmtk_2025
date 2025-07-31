@@ -1,0 +1,78 @@
+[gd_scene load_steps=3 format=3 uid="uid://sdfyq58n6lj0"]
+
+[ext_resource type="Script" uid="uid://cq1fhsij50742" path="res://scripts/UI/UpgradeMenu/upgrade_button.gd" id="1_08jqp"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_2odss"]
+size = Vector2(50, 50)
+
+[node name="UpgradeStat" type="Panel" groups=["UpgradeButton"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_08jqp")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="StatNameLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Stat Name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LvlText" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Lvl:"
+
+[node name="LvlLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 2
+text = "0"
+
+[node name="CostText" type="Label" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Cost:"
+
+[node name="CostLabel" type="Label" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "10.0"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+texture_normal = SubResource("PlaceholderTexture2D_2odss")
+texture_pressed = SubResource("PlaceholderTexture2D_2odss")
+texture_hover = SubResource("PlaceholderTexture2D_2odss")
+texture_disabled = SubResource("PlaceholderTexture2D_2odss")
+texture_focused = SubResource("PlaceholderTexture2D_2odss")
+stretch_mode = 4
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/Button" to="." method="onButtonClick"]
