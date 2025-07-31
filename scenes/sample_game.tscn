@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bg2bopnnksexf"]
-
-[ext_resource type="PackedScene" uid="uid://cn4sis57vp3si" path="res://addons/simple_menu/scenes/sample_game.tscn" id="1_sample"]
-
-[node name="SampleGame" type="Node2D"]
-
-[node name="GameContent" parent="." instance=ExtResource("1_sample")]
