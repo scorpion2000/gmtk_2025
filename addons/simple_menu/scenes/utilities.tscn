@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bod08ms53xe4l" path="res://addons/simple_menu/scripts/Utilities.gd" id="1_1a5s3"]
 [ext_resource type="PackedScene" uid="uid://dc388hkklqvvc" path="res://addons/simple_menu/scenes/main_menu.tscn" id="2_2wsm8"]
-[ext_resource type="PackedScene" uid="uid://de3ufogxp37s8" path="res://test.tscn" id="2_ruegy"]
+[ext_resource type="PackedScene" uid="uid://de3ufogxp37s8" path="res://scenes/test.tscn" id="2_ruegy"]
 
 [node name="Utilities" type="Node"]
 script = ExtResource("1_1a5s3")
