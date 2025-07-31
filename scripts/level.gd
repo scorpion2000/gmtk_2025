@@ -57,9 +57,8 @@ func setup_room_system() -> void:
 		room_manager.room_changed.connect(_on_room_changed)
 		room_manager.room_cleared.connect(_on_room_cleared)
 		
-		# Initialize mini-map
-		if hud:
-			hud.initialize_minimap(room_manager.level_generator)
+		# Initialize mini-map after room manager is set up
+		call_deferred("_setup_minimap")
 		
 		print("Room system initialized")
 	else:
@@ -113,11 +112,11 @@ func _on_hunger_depleted() -> void:
 	print("GAME OVER: Hunger depleted!")
 	# TODO: Trigger game over sequence
 
-func _on_sanity_critical(current_value: float) -> void:
+func _on_sanity_critical(_current_value: float) -> void:
 	print("WARNING: Sanity critical!")
 	# TODO: Trigger visual/audio warning effects
 
-func _on_hunger_critical(current_value: float) -> void:
+func _on_hunger_critical(_current_value: float) -> void:
 	print("WARNING: Hunger critical!")
 	# TODO: Trigger visual/audio warning effects
 
@@ -153,3 +152,7 @@ func _on_room_cleared(room: RoomData) -> void:
 			print("Shrine accessed - implement buff exchange system")
 		RoomData.RoomType.BEDROOM:
 			RestoreSanity(15.0)  # Bedroom restores sanity
+
+func _setup_minimap():
+	if hud and room_manager:
+		hud.initialize_minimap(room_manager.get_level_generator())

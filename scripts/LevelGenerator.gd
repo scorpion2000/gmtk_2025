@@ -1,6 +1,7 @@
 class_name LevelGenerator
 extends Node
 
+# Fixed class declaration
 @export var grid_width: int = 13
 @export var grid_height: int = 13
 @export var min_rooms: int = 7
@@ -13,8 +14,8 @@ var start_x: int
 var start_y: int
 
 func _ready():
-	start_x = grid_width / 2
-	start_y = grid_height / 2
+	start_x = int(float(grid_width) / 2.0)
+	start_y = int(float(grid_height) / 2.0)
 
 func generate_level() -> Array[RoomData]:
 	_initialize_grid()

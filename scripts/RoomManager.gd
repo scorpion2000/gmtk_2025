@@ -95,7 +95,6 @@ func _start_room_transition():
 	transition_tween.tween_method(_update_player_transition, 0.0, 1.0, transition_duration)
 	transition_tween.tween_callback(_finish_room_transition)
 
-# Update player position during transition
 func _update_player_transition(progress: float):
 	if not player:
 		return
@@ -103,19 +102,16 @@ func _update_player_transition(progress: float):
 	var current_pos = transition_start_position.lerp(transition_target_position, progress)
 	player.global_position = current_pos
 
-# Finish room transition
 func _finish_room_transition():
 	if player:
 		player.global_position = transition_target_position
 		player.z_index = 10
 	
-	# Emit room changed signal
 	room_changed.emit(current_room)
 	
 	is_transitioning = false
 	print("Room loading complete. Visited rooms: ", _count_visited_rooms())
 
-# Count how many rooms have been visited (for debugging)
 func _count_visited_rooms() -> int:
 	var count = 0
 	for room in level_generator.all_rooms:
@@ -123,7 +119,6 @@ func _count_visited_rooms() -> int:
 			count += 1
 	return count
 
-# Load a single room scene into memory
 func _load_room_scene(room_data: RoomData):
 	var room_scene_node: Node
 	
@@ -136,8 +131,7 @@ func _load_room_scene(room_data: RoomData):
 	else:
 		room_scene_node = _create_placeholder_room(room_data)
 		room_container.add_child(room_scene_node)
-	
-	# Position room scene based on grid coordinates
+
 	var room_offset = Vector2(
 		room_data.grid_x * 280,  # Rooms are 242x242, so 280 spacing (38px gap)
 		room_data.grid_y * 280   # Square spacing for square rooms
@@ -206,40 +200,30 @@ func _find_doors_in_scene(room_scene: Node) -> Dictionary:
 	
 	return doors
 
-# Handle player entering a door
+
 func _on_door_entered(direction: RoomData.DoorDirection, body):
 	if body != player or is_transitioning or door_cooldown_timer > 0:
 		return
 	
-	# Start door cooldown
 	door_cooldown_timer = door_cooldown_duration
-	
-	# Track which door the player used
 	last_door_direction = direction
-	
-	# Calculate target room position
 	var offset = RoomData.get_direction_offset(direction)
 	var target_x = current_room.grid_x + offset.x
 	var target_y = current_room.grid_y + offset.y
-	
-	# Get target room
 	var target_room = level_generator.get_room_at(target_x, target_y)
 	if target_room:
 		call_deferred("_load_room", target_room)
 
-# Preload adjacent rooms for smoother transitions
 func _preload_adjacent_rooms(room: RoomData):
 	for direction in RoomData.DoorDirection.values():
 		if room.has_door(direction):
 			var offset = RoomData.get_direction_offset(direction)
 			var adj_x = room.grid_x + offset.x
 			var adj_y = room.grid_y + offset.y
-			
 			var adjacent_room = level_generator.get_room_at(adj_x, adj_y)
 			if adjacent_room and not loaded_room_scenes.has(adjacent_room):
 				_load_room_scene(adjacent_room)
 
-# Get the opposite door direction
 func _get_opposite_door(direction: RoomData.DoorDirection) -> RoomData.DoorDirection:
 	match direction:
 		RoomData.DoorDirection.NORTH:
@@ -298,11 +282,8 @@ func _create_placeholder_room(room_data: RoomData) -> Node2D:
 			bg.color = Color.GRAY * 0.3
 	
 	placeholder.add_child(bg)
-	
-	# Create door areas
+
 	_create_placeholder_doors(placeholder, room_data)
-	
-	# Add room type label
 	var label = Label.new()
 	label.text = RoomData.RoomType.keys()[room_data.room_type] + " ROOM"
 	label.position = Vector2(-50, -10)
@@ -310,7 +291,6 @@ func _create_placeholder_room(room_data: RoomData) -> Node2D:
 	
 	return placeholder
 
-# Create placeholder doors for testing
 func _create_placeholder_doors(room: Node2D, room_data: RoomData):
 	var door_positions = {
 		RoomData.DoorDirection.NORTH: Vector2(0, -121),  # Top edge of 242x242 room
@@ -341,11 +321,12 @@ func _create_placeholder_doors(room: Node2D, room_data: RoomData):
 			
 			room.add_child(door)
 
-# Get current room data
 func get_current_room() -> RoomData:
 	return current_room
 
-# Mark current room as cleared
+func get_level_generator() -> LevelGenerator:
+	return level_generator
+
 func mark_room_cleared():
 	if current_room:
 		current_room.is_cleared = true
