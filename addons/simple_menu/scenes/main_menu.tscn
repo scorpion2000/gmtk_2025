@@ -46,8 +46,10 @@ layout_mode = 2
 size_flags_vertical = 6
 theme = ExtResource("1_0ajpt")
 theme_override_font_sizes/font_size = 50
-text = "Simple Template: Main Menu
+text = "Loop Cat
 "
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="Start" type="Button" parent="UI/MainMenu/VBoxContainer"]
 custom_minimum_size = Vector2(100, 32)

@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://hf7k256qwtmv"]
+
+[ext_resource type="PackedScene" uid="uid://bvk8x7p2qm1n8" path="res://scenes/GameHUD.tscn" id="1_hud"]
+[ext_resource type="Script" uid="uid://5e4gahtbq654" path="res://scripts/HUDTestScene.gd" id="2_test_script"]
+
+[node name="HUDTestScene" type="Node2D"]
+script = ExtResource("2_test_script")
+
+[node name="GameHUD" parent="." instance=ExtResource("1_hud")]
+
+[node name="TestControls" type="VBoxContainer" parent="."]
+offset_left = 400.0
+offset_top = 50.0
+offset_right = 600.0
+offset_bottom = 300.0
+
+[node name="Instructions" type="Label" parent="TestControls"]
+layout_mode = 2
+text = "HUD Test Controls:
+1 - Add Loop
+2 - Damage Sanity (-10)
+3 - Restore Sanity (+10)
+4 - Damage Hunger (-10)
+5 - Restore Hunger (+10)
+6 - Sanity drain event (3s)
+7 - Toggle hunger drain
+8 - Short sanity drain (1s)
+9 - Long sanity drain (5s)
+0 - Reset all values
+
+Sanity: Event-based drain (5 pts/sec)
+Hunger: Constant drain (1.5 pts/sec)"
+
+[node name="CurrentValues" type="Label" parent="TestControls"]
+layout_mode = 2
+text = "Current Values:
+Loops: 0
+Sanity: 100%
+Hunger: 100%"
