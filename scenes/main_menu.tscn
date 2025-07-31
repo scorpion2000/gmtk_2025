@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://4h0bvgm0pb31"]
+
+[ext_resource type="PackedScene" uid="uid://x8khrexoscpv" path="res://addons/simple_menu/scenes/utilities.tscn" id="1_a8kur"]
+
+[node name="MainMenu" type="Node2D"]
+
+[node name="Utilities" parent="." instance=ExtResource("1_a8kur")]
