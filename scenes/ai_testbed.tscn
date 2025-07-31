@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmnss4sqge7av"]
+[gd_scene load_steps=7 format=3 uid="uid://cmnss4sqge7av"]
 
 [ext_resource type="Script" uid="uid://cxuf2mpqak3mw" path="res://scripts/entities/basic_ai.gd" id="1_ls053"]
 [ext_resource type="Texture2D" uid="uid://cesvra3ix77tm" path="res://assets/Art/icon.svg" id="2_1m8sh"]
 [ext_resource type="Script" uid="uid://d3mgcqsoexkpx" path="res://scripts/entities/components/pathGenerator.gd" id="3_hhqxy"]
+[ext_resource type="Script" uid="uid://bj4fwoo8lt10" path="res://scripts/entities/components/noiseGenerator.gd" id="4_hhqxy"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_y5061"]
 vertices = PackedVector2Array(1126.96, 631, 16.0938, 631.992, 21.9063, 22, 1125.03, 22)
@@ -30,4 +31,32 @@ texture = ExtResource("2_1m8sh")
 [node name="Timer" type="Timer" parent="Basic AI" node_paths=PackedStringArray("parent")]
 autostart = true
 script = ExtResource("3_hhqxy")
+parent = NodePath("..")
+
+[node name="Timer2" type="Timer" parent="Basic AI" node_paths=PackedStringArray("parent")]
+one_shot = true
+autostart = true
+script = ExtResource("4_hhqxy")
+parent = NodePath("..")
+
+[node name="Basic AI2" type="CharacterBody2D" parent="."]
+position = Vector2(380, 263)
+script = ExtResource("1_ls053")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Basic AI2"]
+shape = SubResource("CircleShape2D_t6o6c")
+
+[node name="Sprite2D" type="Sprite2D" parent="Basic AI2"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_1m8sh")
+
+[node name="Timer" type="Timer" parent="Basic AI2" node_paths=PackedStringArray("parent")]
+autostart = true
+script = ExtResource("3_hhqxy")
+parent = NodePath("..")
+
+[node name="Timer2" type="Timer" parent="Basic AI2" node_paths=PackedStringArray("parent")]
+one_shot = true
+autostart = true
+script = ExtResource("4_hhqxy")
 parent = NodePath("..")
