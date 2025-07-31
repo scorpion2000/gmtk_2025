@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cesvra3ix77tm" path="res://assets/Art/icon.svg" id="2_qhqgy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4flbx"]
-size = Vector2(64, 64)
+size = Vector2(32, 32)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g2els")
@@ -12,10 +12,11 @@ speed = 300
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-3.8147e-06, 5.72205e-06)
-scale = Vector2(0.46875, 0.53125)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_qhqgy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_4flbx")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2.955, 2.955)

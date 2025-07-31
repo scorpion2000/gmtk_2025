@@ -8,29 +8,27 @@ signal room_cleared(room: RoomData)
 var current_room: RoomData
 var current_room_scene: Node
 var level_generator: LevelGenerator
-var last_door_direction: RoomData.DoorDirection = RoomData.DoorDirection.NORTH  # Track which door player came from
-var is_first_room_load: bool = true  # Track if this is the very first room load
+var last_door_direction: RoomData.DoorDirection = RoomData.DoorDirection.NORTH
+var is_first_room_load: bool = true
 
 # Room transition
 var is_transitioning: bool = false
-var transition_duration: float = 0.3  # Shorter transition for quicker response
+var transition_duration: float = 0.3
 var door_cooldown_timer: float = 0.0
-var door_cooldown_duration: float = 0.3  # Much shorter cooldown
+var door_cooldown_duration: float = 0.3
 
 # Transition state
 var transition_tween: Tween
 var transition_start_position: Vector2
 var transition_target_position: Vector2
-var player_can_move: bool = true  # Track if player input is allowed
+var player_can_move: bool = true
 
-# Player reference
 var player: Node2D
 
 # Fog of war - track loaded room scenes
-var loaded_room_scenes: Dictionary = {}  # RoomData -> Node
-var visible_rooms: Array[RoomData] = []  # Currently visible rooms
+var loaded_room_scenes: Dictionary = {}
+var visible_rooms: Array[RoomData] = []
 
-# Room scene container
 @onready var room_container: Node = $RoomContainer
 
 func _ready():
@@ -38,87 +36,62 @@ func _ready():
 	add_child(level_generator)
 
 func _process(delta):
-	# Update door cooldown timer
 	if door_cooldown_timer > 0:
 		door_cooldown_timer -= delta
 
-# Initialize the room system
 func initialize_rooms(player_node: Node2D):
 	player = player_node
-	
-	# Generate level
 	var rooms = level_generator.generate_level()
 	print("Generated ", rooms.size(), " rooms")
 	
-	# Start in the starting room
 	var starting_room = level_generator.get_starting_room()
 	if starting_room:
 		_load_room(starting_room)
 
-# Load and display a room
 func _load_room(room_data: RoomData):
 	if is_transitioning:
 		return
 		
 	is_transitioning = true
-	
-	# Set current room and mark as visited
 	current_room = room_data
 	current_room.is_visited = true
-	
 	print("Visiting room: ", RoomData.RoomType.keys()[room_data.room_type], " at (", room_data.grid_x, ",", room_data.grid_y, ")")
 	
-	# Load room scene if not already loaded
 	if not loaded_room_scenes.has(room_data):
 		_load_room_scene(room_data)
 	
-	# Preload adjacent rooms for smoother experience
 	_preload_adjacent_rooms(room_data)
-	
-	# Update fog of war - show only visited rooms
 	_update_fog_of_war()
-	
-	# Position player in the new room
 	current_room_scene = loaded_room_scenes[room_data]
-	
-	# Start smooth transition
 	_start_room_transition()
 
-# Start smooth room transition
 func _start_room_transition():
 	if not player or not current_room_scene:
 		_finish_room_transition()
 		return
 	
-	# Store player's current position as start
 	transition_start_position = player.global_position
-	
-	# Calculate target position for player
 	var target_spawn_position = Vector2.ZERO
+	
 	if is_first_room_load:
-		# First room load - use PlayerSpawn marker if available
 		var spawn_point = current_room_scene.find_child("PlayerSpawn")
 		if spawn_point:
 			target_spawn_position = spawn_point.global_position
 		else:
-			target_spawn_position = current_room_scene.global_position  # Center as fallback
+			target_spawn_position = current_room_scene.global_position
 		is_first_room_load = false
 	else:
-		# Room transition - spawn at the door they came from
 		var opposite_direction = _get_opposite_door(last_door_direction)
 		target_spawn_position = _get_door_spawn_position(opposite_direction)
 	
 	transition_target_position = target_spawn_position
 	
-	# Create and configure tween
 	if transition_tween:
 		transition_tween.kill()
 	
 	transition_tween = create_tween()
 	transition_tween.set_ease(Tween.EASE_OUT)
 	transition_tween.set_trans(Tween.TRANS_CUBIC)
-	
-	# Animate player position
 	transition_tween.tween_method(_update_player_transition, 0.0, 1.0, transition_duration)
 	transition_tween.tween_callback(_finish_room_transition)
 
@@ -166,8 +139,8 @@ func _load_room_scene(room_data: RoomData):
 	
 	# Position room scene based on grid coordinates
 	var room_offset = Vector2(
-		room_data.grid_x * 700,  # Rooms are 600x600, so 700 spacing (100px gap)
-		room_data.grid_y * 700   # Square spacing for square rooms
+		room_data.grid_x * 280,  # Rooms are 242x242, so 280 spacing (38px gap)
+		room_data.grid_y * 280   # Square spacing for square rooms
 	)
 	room_scene_node.position = room_offset
 	
@@ -291,13 +264,13 @@ func _get_door_spawn_position(door_direction: RoomData.DoorDirection) -> Vector2
 		# Position player near the door (inside the room, not on the door)
 	match door_direction:
 		RoomData.DoorDirection.NORTH:
-			return room_pos + Vector2(0, -200)  # Well inside room from top door
+			return room_pos + Vector2(0, -80)   # Well inside room from top door
 		RoomData.DoorDirection.SOUTH:
-			return room_pos + Vector2(0, 200)   # Well inside room from bottom door
+			return room_pos + Vector2(0, 80)    # Well inside room from bottom door
 		RoomData.DoorDirection.EAST:
-			return room_pos + Vector2(200, 0)   # Well inside room from right door
+			return room_pos + Vector2(80, 0)    # Well inside room from right door
 		RoomData.DoorDirection.WEST:
-			return room_pos + Vector2(-200, 0)  # Well inside room from left door
+			return room_pos + Vector2(-80, 0)   # Well inside room from left door
 		_:
 			return room_pos  # Center as fallback
 
@@ -308,8 +281,8 @@ func _create_placeholder_room(room_data: RoomData) -> Node2D:
 	
 	# Create visual background
 	var bg = ColorRect.new()
-	bg.size = Vector2(600, 600)  # Square rooms instead of rectangles
-	bg.position = Vector2(-300, -300)  # Centered at origin
+	bg.size = Vector2(242, 242)  # New smaller square rooms
+	bg.position = Vector2(-121, -121)  # Centered at origin
 	
 	# Color based on room type
 	match room_data.room_type:
@@ -340,10 +313,10 @@ func _create_placeholder_room(room_data: RoomData) -> Node2D:
 # Create placeholder doors for testing
 func _create_placeholder_doors(room: Node2D, room_data: RoomData):
 	var door_positions = {
-		RoomData.DoorDirection.NORTH: Vector2(0, -300),  # Top edge of 600x600 room
-		RoomData.DoorDirection.EAST: Vector2(300, 0),    # Right edge of 600x600 room
-		RoomData.DoorDirection.SOUTH: Vector2(0, 300),   # Bottom edge of 600x600 room
-		RoomData.DoorDirection.WEST: Vector2(-300, 0)    # Left edge of 600x600 room
+		RoomData.DoorDirection.NORTH: Vector2(0, -121),  # Top edge of 242x242 room
+		RoomData.DoorDirection.EAST: Vector2(121, 0),    # Right edge of 242x242 room
+		RoomData.DoorDirection.SOUTH: Vector2(0, 121),   # Bottom edge of 242x242 room
+		RoomData.DoorDirection.WEST: Vector2(-121, 0)    # Left edge of 242x242 room
 	}
 	
 	var door_names = ["NorthDoor", "EastDoor", "SouthDoor", "WestDoor"]

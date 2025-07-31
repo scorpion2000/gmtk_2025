@@ -1,18 +1,14 @@
 class_name LevelGenerator
 extends Node
 
-# Generation settings
 @export var grid_width: int = 13
 @export var grid_height: int = 13
-@export var min_rooms: int = 7  # Minimum guaranteed rooms
-@export var max_rooms: int = 10  # Maximum rooms for variety
+@export var min_rooms: int = 7
+@export var max_rooms: int = 10
 @export var special_room_chance: float = 0.4
 
-# Room grid
 var room_grid: Array[Array] = []
 var all_rooms: Array[RoomData] = []
-
-# Starting position (center of grid)
 var start_x: int
 var start_y: int
 
@@ -20,20 +16,16 @@ func _ready():
 	start_x = grid_width / 2
 	start_y = grid_height / 2
 
-# Generate a new level layout
 func generate_level() -> Array[RoomData]:
 	_initialize_grid()
 	_generate_branching_layout()
 	_add_special_rooms()
 	_finalize_doors()
-	
 	return all_rooms
 
-# Initialize empty grid
 func _initialize_grid():
 	room_grid.clear()
 	all_rooms.clear()
-	
 	for x in grid_width:
 		room_grid.append([])
 		for y in grid_height:
