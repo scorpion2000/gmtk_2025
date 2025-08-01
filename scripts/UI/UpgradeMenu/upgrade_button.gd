@@ -49,8 +49,6 @@ func _ready() -> void:
 	statCost = getCurrentCost()
 	# Listen for currency updates and refresh the label.
 	GlobalLoops.updateLoops.connect(loopsUpdated)
-	# Initialize the currency.
-	loopsUpdated(GlobalLoops.LoopsCurrency)
 	# Make sure level label matches the starting value.
 	%LvlLabel.text = str(level)
 
@@ -68,7 +66,7 @@ func canUpgrade() -> bool:
 	return GlobalLoops.LoopsCurrency >= statCost
 
 # Update currency label when the global currency changes.
-func loopsUpdated(newLoops : float):
+func loopsUpdated(_newLoops : float):
 	%Button.disabled = !canUpgrade()
 
 # ---------- Interaction ----------
