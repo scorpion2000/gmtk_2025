@@ -59,9 +59,17 @@ func _on_search_completed() -> void:
 func give_random_reward() -> void:
 	var random_value = randf()
 	
+	# Check if loop boost is active
+	var boost_multiplier = 1.0
+	if game_manager and game_manager.is_loop_boost_active():
+		boost_multiplier = game_manager.get_loop_boost_multiplier()
+		print("Loop boost active! Multiplier: ", boost_multiplier)
+	
 	if random_value <= loop_chance:
 		# Give loops
 		var loops_amount = randi_range(min_loops, max_loops)
+		# Apply boost multiplier
+		loops_amount = int(loops_amount * boost_multiplier)
 		GlobalLoops.addLoops(loops_amount)
 		print("Found ", loops_amount, " loops in ", get_parent().name, "!")
 		

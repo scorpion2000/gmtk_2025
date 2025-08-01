@@ -6,9 +6,37 @@ extends CharacterBody2D
 @export var friction: float = 15.0
 
 var current_speed: float
+# Base speeds for buff calculations
+var base_walk_speed: float
+var base_sprint_speed: float
+var speed_modifiers: Array[float] = []
 
 func _ready() -> void:
 	add_to_group("player")
+	# Store base speeds
+	base_walk_speed = walk_speed
+	base_sprint_speed = sprint_speed
+
+func apply_speed_modifier(multiplier: float) -> void:
+	speed_modifiers.append(multiplier)
+	update_speeds()
+	print("Applied speed modifier: ", multiplier)
+
+func remove_speed_modifier(multiplier: float) -> void:
+	speed_modifiers.erase(multiplier)
+	update_speeds()
+	print("Removed speed modifier: ", multiplier)
+
+func update_speeds() -> void:
+	# Calculate total multiplier
+	var total_multiplier = 1.0
+	for modifier in speed_modifiers:
+		total_multiplier *= modifier
+	
+	# Apply to base speeds
+	walk_speed = base_walk_speed * total_multiplier
+	sprint_speed = base_sprint_speed * total_multiplier
+	print("Updated speeds - Walk: ", walk_speed, ", Sprint: ", sprint_speed)
 
 func _physics_process(delta: float): 
 	var direction = Input.get_vector("left", "right", "up", "down")

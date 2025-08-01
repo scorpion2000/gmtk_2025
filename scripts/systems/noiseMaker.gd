@@ -26,7 +26,16 @@ func _ready():
     self.add_child(lifeTimer)
     self.add_child(collision)
 
-    shape.radius = noiseSize
+    # Check for noise reduction buff
+    var final_noise_size = noiseSize
+    var game_manager = get_tree().get_first_node_in_group("game_manager")
+    if game_manager and game_manager.noise_reduction_active:
+        var reduced_size = int(noiseSize * game_manager.get_noise_reduction_multiplier())
+        # Convert back to NoiseSize enum
+        final_noise_size = reduced_size as NoiseSize
+        print("Noise reduction active! Reduced size from ", noiseSize, " to ", final_noise_size)
+
+    shape.radius = final_noise_size
     collision.shape = shape
 
     lifeTimer.wait_time = 1

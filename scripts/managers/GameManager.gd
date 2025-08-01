@@ -60,6 +60,38 @@ func RestoreHunger(amount: float) -> void:
 		var new_hunger = HudReference.GetHunger() + amount
 		HudReference.SetHunger(new_hunger)
 
+# --- Buff System ---
+var noise_reduction_active: bool = false
+var loop_boost_active: bool = false
+var loop_boost_multiplier: float = 1.0
+
+func apply_noise_reduction(multiplier: float) -> void:
+	noise_reduction_active = true
+	print("GameManager: Applied noise reduction with multiplier ", multiplier)
+
+func remove_noise_reduction() -> void:
+	noise_reduction_active = false
+	print("GameManager: Removed noise reduction")
+
+func apply_loop_boost(chance_multiplier: float, amount_multiplier: float) -> void:
+	loop_boost_active = true
+	loop_boost_multiplier = amount_multiplier
+	print("GameManager: Applied loop boost - chance: ", chance_multiplier, ", amount: ", amount_multiplier)
+
+func remove_loop_boost() -> void:
+	loop_boost_active = false
+	loop_boost_multiplier = 1.0
+	print("GameManager: Removed loop boost")
+
+func get_noise_reduction_multiplier() -> float:
+	return 0.9 if noise_reduction_active else 1.0
+
+func get_loop_boost_multiplier() -> float:
+	return loop_boost_multiplier if loop_boost_active else 1.0
+
+func is_loop_boost_active() -> bool:
+	return loop_boost_active
+
 # --- Internal Tick ---
 func process_hunger_drain(delta: float) -> void:
 	var new_hunger = HudReference.GetHunger() - (hunger_drain_rate * delta)
