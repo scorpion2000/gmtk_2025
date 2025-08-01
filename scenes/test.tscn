@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://de3ufogxp37s8"]
+[gd_scene load_steps=12 format=3 uid="uid://de3ufogxp37s8"]
 
 [ext_resource type="PackedScene" uid="uid://ckgf4x4ssqojg" path="res://scenes/player.tscn" id="1_37kl0"]
 [ext_resource type="Script" uid="uid://uokxyeqy4rue" path="res://scripts/room_system/level.gd" id="1_iyx0m"]
@@ -9,6 +9,13 @@
 [ext_resource type="PackedScene" uid="uid://cf6t2nxd3fq6q" path="res://scenes/UI/UpgradeMenu/upgrade_menu.tscn" id="7_jcd4p"]
 [ext_resource type="Script" uid="uid://bapesw42nw1ql" path="res://scenes/ui_manager.gd" id="9_uacia"]
 [ext_resource type="PackedScene" uid="uid://dc388hkklqvvc" path="res://addons/simple_menu/scenes/main_menu.tscn" id="9_yk7ts"]
+[ext_resource type="Script" path="res://scripts/Interactable.gd" id="10_interactable"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
+size = Vector2(80, 80)
 
 [node name="Test" type="Node2D"]
 script = ExtResource("1_iyx0m")
@@ -43,3 +50,24 @@ hud = NodePath("../CanvasLayer/GameHUD")
 endScreen = NodePath("../CanvasLayer/EndScreen")
 upgradeMenu = NodePath("../CanvasLayer/UpgradeMenu")
 mainMenuScene = ExtResource("9_yk7ts")
+
+[node name="TestSearchableObject" type="StaticBody2D" parent="."]
+position = Vector2(150, 0)
+
+[node name="ColorRect" type="ColorRect" parent="TestSearchableObject"]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.6, 0.4, 0.2, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestSearchableObject"]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="Interactable" type="Area2D" parent="TestSearchableObject"]
+script = ExtResource("10_interactable")
+interaction_time = 3.0
+interaction_prompt = "Search Chest"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestSearchableObject/Interactable"]
+shape = SubResource("RectangleShape2D_2")

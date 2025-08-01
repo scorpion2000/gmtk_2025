@@ -7,6 +7,9 @@ extends EntityBase
 
 var current_speed: float
 
+func _ready() -> void:
+	add_to_group("player")
+
 func _physics_process(delta: float): 
 	var direction = Input.get_vector("left", "right", "up", "down")
 	var is_sprinting = Input.is_action_pressed("sprint")
