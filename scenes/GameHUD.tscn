@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bvk8x7p2qm1n8"]
 
-[ext_resource type="Script" uid="uid://iost784vxrh3" path="res://scripts/GameHUD.gd" id="1_hud_script"]
-[ext_resource type="Script" uid="uid://5gpr4b2pqkfu" path="res://scripts/MiniMap.gd" id="2_minimap_script"]
+[ext_resource type="Script" uid="uid://iost784vxrh3" path="res://scripts/UI/GameHUD.gd" id="1_hud_script"]
+[ext_resource type="Script" uid="uid://5gpr4b2pqkfu" path="res://scripts/UI/MiniMap.gd" id="2_minimap_script"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1"]
 font_size = 18
