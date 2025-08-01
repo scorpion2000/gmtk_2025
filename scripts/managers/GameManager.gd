@@ -2,7 +2,7 @@
 class_name GameManager
 extends Node
 
-signal loopsUpdated(new_value: int)
+signal loopsUpdated(newValue: int)
 
 # --- Public References ---
 @export var HudReference: GameHUD

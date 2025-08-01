@@ -18,35 +18,35 @@ func _ready() -> void:
 	var parent_name = "no parent"
 	if get_parent():
 		parent_name = get_parent().name
-	print("SearchableObject _ready called for: ", parent_name)
+	#print("SearchableObject _ready called for: ", parent_name)
 	# Find the GameManager
 	call_deferred("find_game_manager")
 	
 	# Connect to our own completion signal
 	interaction_completed.connect(_on_search_completed)
-	print("Connected interaction_completed signal for: ", parent_name)
 
 func find_game_manager() -> void:
 	# Look for GameManager in the scene tree
 	game_manager = get_tree().get_first_node_in_group("GameManager") as GameManager
 	if game_manager:
-		print("SearchableObject found GameManager: ", game_manager)
+		pass
+		#print("SearchableObject found GameManager: ", game_manager)
 	else:
 		# Fallback: search by type
 		var root = get_tree().current_scene
 		game_manager = _find_node_by_class(root, "GameManager") as GameManager
-		if game_manager:
-			print("SearchableObject found GameManager via search: ", game_manager)
-		else:
-			print("WARNING: SearchableObject could not find GameManager!")
+		#if game_manager:
+			#print("SearchableObject found GameManager via search: ", game_manager)
+		#else:
+			#print("WARNING: SearchableObject could not find GameManager!")
 
 func _on_search_completed() -> void:
 	var parent_name = "no parent"
 	if get_parent():
 		parent_name = get_parent().name
-	print("_on_search_completed called for: ", parent_name)
+	#print("_on_search_completed called for: ", parent_name)
 	if has_been_searched:
-		print("Object already searched: ", parent_name)
+		#print("Object already searched: ", parent_name)
 		return
 	
 	has_been_searched = true
@@ -62,7 +62,7 @@ func give_random_reward() -> void:
 	var boost_multiplier = 1.0
 	if game_manager and game_manager.isLoopBoostActive():
 		boost_multiplier = game_manager.getLoopBoostMultiplier()
-		print("Loop boost active! Multiplier: ", boost_multiplier)
+		#print("Loop boost active! Multiplier: ", boost_multiplier)
 	
 	if random_value <= loop_chance:
 		# Give loops
@@ -70,7 +70,7 @@ func give_random_reward() -> void:
 		# Apply boost multiplier
 		loops_amount = int(loops_amount * boost_multiplier)
 		GlobalLoops.addLoops(loops_amount)
-		print("Found ", loops_amount, " loops in ", get_parent().name, "!")
+		#print("Found ", loops_amount, " loops in ", get_parent().name, "!")
 		
 		# Update the HUD loop display if available
 		if game_manager:
@@ -81,9 +81,10 @@ func give_random_reward() -> void:
 		var food_amount = randf_range(min_food, max_food)
 		if game_manager:
 			game_manager.RestoreHunger(food_amount)
-			print("Found food worth ", food_amount, " hunger in ", get_parent().name, "!")
+			#print("Found food worth ", food_amount, " hunger in ", get_parent().name, "!")
 		else:
-			print("No GameManager found - can't give food reward")
+			pass
+			#print("No GameManager found - can't give food reward")
 
 func update_searched_appearance() -> void:
 	# Change the visual to show this object has been searched

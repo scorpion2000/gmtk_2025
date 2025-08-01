@@ -108,13 +108,13 @@ func updateHungerBar() -> void:
 		HungerBarFill.color = Color(1.0, 0.2, 0.2)    # Red – starving
 
 func checkSanityThresholds() -> void:
-	if statSanity.getValue() <= statSanity.minValue:
+	if statSanity.getValue() <= statSanity.getMinValue():
 		SanityDepleted.emit()
 	elif statSanity.getPercentage() <= 0.25:
 		SanityCritical.emit(statSanity.getValue())
 
 func checkHungerThresholds() -> void:
-	if statHunger.getValue() <= statHunger.minValue:
+	if statHunger.getValue() <= statHunger.getMinValue():
 		HungerDepleted.emit()
 	elif statHunger.getPercentage() <= 0.25:
 		HungerCritical.emit(statHunger.getValue())

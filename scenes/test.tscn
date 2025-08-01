@@ -42,10 +42,10 @@ visible = false
 
 [node name="UIManager" type="Node" parent="." node_paths=PackedStringArray("hud", "endScreen", "upgradeMenu")]
 script = ExtResource("9_uacia")
-mainMenuScene = ExtResource("9_yk7ts")
 hud = NodePath("../CanvasLayer/GameHUD")
 endScreen = NodePath("../CanvasLayer/EndScreen")
 upgradeMenu = NodePath("../CanvasLayer/UpgradeMenu")
+mainMenuScene = ExtResource("9_yk7ts")
 
 [node name="TestSearchableObject" type="StaticBody2D" parent="."]
 position = Vector2(150, 0)

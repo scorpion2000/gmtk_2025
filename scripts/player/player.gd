@@ -16,8 +16,8 @@ var speed_modifiers: Array[float] = []
 func _ready() -> void:
 	add_to_group("player")
 	# Store base speeds
-	base_walk_speed = walk_speed
-	base_sprint_speed = sprint_speed
+	base_walk_speed = Stats.getStatRef("speed").getValue()
+	base_sprint_speed = Stats.getStatRef("speed").getMaxValue()
 
 func apply_speed_modifier(multiplier: float) -> void:
 	speed_modifiers.append(multiplier)
