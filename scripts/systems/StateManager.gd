@@ -16,6 +16,7 @@ enum StateChange
 }
 
 var gameStateCanChange: bool = true
+var currentState: GameState = GameState.MainMenu
 
 signal gameStateChanged(newGameState: GameState)
 
@@ -32,5 +33,7 @@ func ToggleGameStateAllowance(_state: StateChange):
 
 func ChangeGameState(_newGameState: GameState):
     if !gameStateCanChange:
+        printt("Game State is locked, cannot be changed")
         return
+    currentState = _newGameState
     gameStateChanged.emit(_newGameState)
