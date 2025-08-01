@@ -36,11 +36,8 @@ func onRetryRequested() -> void:
 	endScreen.visible = false
 	upgradeMenu.visible = false
 	get_tree().paused = false
-
-	var current_scene := get_tree().current_scene
-	if current_scene:
-		# reload the current scene
-		get_tree().change_scene_to_file(current_scene.scene_file_path)
+	
+	get_tree().reload_current_scene()
 
 func onUpgradeRequested() -> void:
 	# Hide end screen and show upgrade menu

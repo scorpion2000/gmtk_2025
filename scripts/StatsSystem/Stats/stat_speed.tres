@@ -5,7 +5,7 @@
 [resource]
 resource_name = "Speed"
 script = ExtResource("1_7fm3p")
-currentValue = 300.0
+currentValue = 100.0
 minValue = 0.0
-maxValue = 9999.0
+maxValue = 180.0
 metadata/_custom_type_script = "uid://dx24qqcspn7tv"

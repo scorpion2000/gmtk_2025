@@ -1,7 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://de3ufogxp37s8"]
 
 [ext_resource type="PackedScene" uid="uid://ckgf4x4ssqojg" path="res://scenes/player.tscn" id="1_37kl0"]
-[ext_resource type="Script" uid="uid://uokxyeqy4rue" path="res://scripts/room_system/level.gd" id="1_iyx0m"]
 [ext_resource type="PackedScene" uid="uid://bvk8x7p2qm1n8" path="res://scenes/GameHUD.tscn" id="2_bl13t"]
 [ext_resource type="Script" uid="uid://djuarkdn61ex2" path="res://scripts/managers/RoomManager.gd" id="4_d8r7f"]
 [ext_resource type="Script" uid="uid://cog8ddhnycnp" path="res://scripts/managers/GameManager.gd" id="5_j5jx5"]
@@ -9,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cf6t2nxd3fq6q" path="res://scenes/UI/UpgradeMenu/upgrade_menu.tscn" id="7_jcd4p"]
 [ext_resource type="Script" uid="uid://bapesw42nw1ql" path="res://scenes/ui_manager.gd" id="9_uacia"]
 [ext_resource type="PackedScene" uid="uid://dc388hkklqvvc" path="res://addons/simple_menu/scenes/main_menu.tscn" id="9_yk7ts"]
-[ext_resource type="Script" path="res://scripts/Interactable.gd" id="10_interactable"]
+[ext_resource type="Script" uid="uid://dujt5tny6b6xh" path="res://scripts/Interactable.gd" id="10_interactable"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(64, 64)
@@ -17,8 +16,10 @@ size = Vector2(64, 64)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
 size = Vector2(80, 80)
 
-[node name="Test" type="Node2D"]
-script = ExtResource("1_iyx0m")
+[node name="GameManager" type="Node2D" node_paths=PackedStringArray("HudReference", "UiManager")]
+script = ExtResource("5_j5jx5")
+HudReference = NodePath("CanvasLayer/GameHUD")
+UiManager = NodePath("UIManager")
 
 [node name="Player" parent="." instance=ExtResource("1_37kl0")]
 
@@ -38,11 +39,6 @@ visible = false
 [node name="UpgradeMenu" parent="CanvasLayer" instance=ExtResource("7_jcd4p")]
 process_mode = 3
 visible = false
-
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("HudReference", "uiManager")]
-script = ExtResource("5_j5jx5")
-HudReference = NodePath("../CanvasLayer/GameHUD")
-uiManager = NodePath("../UIManager")
 
 [node name="UIManager" type="Node" parent="." node_paths=PackedStringArray("hud", "endScreen", "upgradeMenu")]
 script = ExtResource("9_uacia")
@@ -66,7 +62,6 @@ shape = SubResource("RectangleShape2D_1")
 
 [node name="Interactable" type="Area2D" parent="TestSearchableObject"]
 script = ExtResource("10_interactable")
-interaction_time = 3.0
 interaction_prompt = "Search Chest"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TestSearchableObject/Interactable"]

@@ -10,6 +10,7 @@ signal retryPressed()
 @onready var summaryLabel: Label = %SummaryResults
 
 func _ready() -> void:
+	
 	%RetryBtn.pressed.connect(onRetryPressed)
 	%UpgradeBtn.pressed.connect(onUpgradePressed)
 	%MenuBtn.pressed.connect(onMenuPressed)
