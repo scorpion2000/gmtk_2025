@@ -3,9 +3,6 @@
 class_name UpgradeButton
 extends Panel
 
-# Reference to the currency readout in this widget.
-@onready var currencyLabel: Label = %CurrencyLabel
-
 # The stat resource this button will upgrade.
 @export var UpgradeStat: Stat:
 	set(value):
@@ -72,7 +69,6 @@ func canUpgrade() -> bool:
 
 # Update currency label when the global currency changes.
 func loopsUpdated(newLoops : float):
-	currencyLabel.text = str(newLoops)
 	%Button.disabled = !canUpgrade()
 
 # ---------- Interaction ----------

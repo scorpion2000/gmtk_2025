@@ -3,11 +3,9 @@
 [ext_resource type="Script" uid="uid://gdhqyru6cbm2" path="res://scripts/UI/UpgradeMenu/upgrade_menu.gd" id="1_1tmyn"]
 [ext_resource type="PackedScene" uid="uid://sdfyq58n6lj0" path="res://scenes/UI/UpgradeMenu/upgrade_button.tscn" id="1_8qoat"]
 [ext_resource type="Resource" uid="uid://xh8rwgnrd7ac" path="res://scripts/StatsSystem/Stats/persistent_stats.tres" id="2_0ujhq"]
+[ext_resource type="PackedScene" uid="uid://bvppkedek6cnn" path="res://scenes/UI/LoopCounter/loop_counter.tscn" id="3_lkyoy"]
 [ext_resource type="Resource" uid="uid://ck3pd1ewlqnqo" path="res://scripts/StatsSystem/Stats/stat_health.tres" id="4_ur2w5"]
 [ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/stat_speed.tres" id="5_lkyoy"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_2620x"]
-size = Vector2(30, 30)
 
 [node name="UpgradeMenu" type="Panel"]
 anchors_preset = 15
@@ -42,23 +40,9 @@ theme_override_constants/margin_bottom = 5
 [node name="VBoxContainer" type="VBoxContainer" parent="VBox/Margin"]
 layout_mode = 2
 
-[node name="HBox" type="HBoxContainer" parent="VBox/Margin/VBoxContainer"]
+[node name="LoopCounter" parent="VBox/Margin/VBoxContainer" instance=ExtResource("3_lkyoy")]
 layout_mode = 2
-size_flags_vertical = 0
-
-[node name="CurrencyImage" type="TextureRect" parent="VBox/Margin/VBoxContainer/HBox"]
-layout_mode = 2
-size_flags_horizontal = 10
-size_flags_vertical = 4
-texture = SubResource("PlaceholderTexture2D_2620x")
-stretch_mode = 4
-
-[node name="CurrencyLabel" type="Label" parent="VBox/Margin/VBoxContainer/HBox"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 30
-text = "17,000"
+size_flags_horizontal = 8
 
 [node name="StatsContainer" type="VBoxContainer" parent="VBox/Margin/VBoxContainer"]
 unique_name_in_owner = true
