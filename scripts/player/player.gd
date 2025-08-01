@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends EntityBase
 
 @export var walk_speed: float = 100.0
 @export var sprint_speed: float = 180.0
