@@ -1,7 +1,7 @@
 extends Button
 class_name RemapButton
 
-@export var action: String = "Up"
+@export var action: String = "up"
 
 func _init():
 	toggle_mode = true

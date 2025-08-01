@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvk8x7p2qm1n8"]
+[gd_scene load_steps=4 format=3 uid="uid://bvk8x7p2qm1n8"]
 
-[ext_resource type="Script" uid="uid://iost784vxrh3" path="res://scripts/GameHUD.gd" id="1_hud_script"]
+[ext_resource type="Script" uid="uid://iost784vxrh3" path="res://scripts/UI/GameHUD.gd" id="1_hud_script"]
+[ext_resource type="Script" uid="uid://5gpr4b2pqkfu" path="res://scripts/UI/MiniMap.gd" id="2_minimap_script"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1"]
 font_size = 18
@@ -67,3 +68,36 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 0.5, 0.2, 1)
+
+[node name="MiniMap" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 150.0
+grow_horizontal = 0
+script = ExtResource("2_minimap_script")
+
+[node name="MiniMapBackground" type="ColorRect" parent="MiniMap"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1, 0.1, 0.1, 0.8)
+
+[node name="RoomContainer" type="Control" parent="MiniMap"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2

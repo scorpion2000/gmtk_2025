@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://dc388hkklqvvc"]
+[gd_scene load_steps=6 format=3 uid="uid://dc388hkklqvvc"]
 
 [ext_resource type="Theme" uid="uid://cb2tqos08yhkd" path="res://addons/simple_menu/assets/MinimalUI/MinimalUI.tres" id="1_0ajpt"]
 [ext_resource type="Script" uid="uid://62uu0rie8fp5" path="res://addons/simple_menu/scripts/main_menu.gd" id="1_tievw"]
 [ext_resource type="PackedScene" uid="uid://603k3vy4p3f1" path="res://addons/simple_menu/scenes/settings.tscn" id="3_dt7l5"]
+[ext_resource type="PackedScene" uid="uid://bvppkedek6cnn" path="res://scenes/UI/LoopCounter/loop_counter.tscn" id="4_rt5ha"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_rt5ha"]
 
 [node name="MainMenu" type="Node2D"]
 
@@ -85,10 +88,22 @@ theme_override_font_sizes/font_size = 24
 text = "Quit
 "
 
-[node name="Settings" parent="UI" instance=ExtResource("3_dt7l5")]
+[node name="LoopCounter" parent="UI/MainMenu" instance=ExtResource("4_rt5ha")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.023
+anchor_top = 0.035
+anchor_right = 0.153
+anchor_bottom = 0.113
+offset_left = -0.496002
+offset_top = 0.32
+offset_right = -0.256012
+offset_bottom = -0.224007
+LoopsTexture = SubResource("PlaceholderTexture2D_rt5ha")
+
+[node name="Settings" parent="UI" node_paths=PackedStringArray("pre_scene") instance=ExtResource("3_dt7l5")]
 visible = false
-current_tab = 0
-script = null
+pre_scene = NodePath("../MainMenu")
 
 [connection signal="pressed" from="UI/MainMenu/VBoxContainer/Start" to="UI/MainMenu" method="_on_start_pressed"]
 [connection signal="pressed" from="UI/MainMenu/VBoxContainer/Option" to="UI/MainMenu" method="_on_option_pressed"]

@@ -15,6 +15,7 @@ var bar_width: float = 200.0
 @onready var loop_counter_label: Label = $TopLeftContainer/LoopCounter
 @onready var sanity_bar_fill: ColorRect = $TopLeftContainer/SanityBarContainer/SanityBarBackground/SanityBarFill
 @onready var hunger_bar_fill: ColorRect = $TopLeftContainer/HungerBarContainer/HungerBarBackground/HungerBarFill
+@onready var mini_map: MiniMap = $MiniMap
 
 # Signals for when bars reach critical levels
 signal SanityDepleted
@@ -106,3 +107,12 @@ func check_hunger_thresholds() -> void:
 		HungerDepleted.emit()
 	elif current_hunger <= MaxHunger * 0.25:
 		HungerCritical.emit(current_hunger)
+
+# Mini-map management functions
+func initialize_minimap(level_generator: LevelGenerator) -> void:
+	if mini_map:
+		mini_map.initialize(level_generator)
+
+func update_minimap_room(room: RoomData) -> void:
+	if mini_map:
+		mini_map.update_current_room(room)
