@@ -14,7 +14,7 @@ var roomManager: RoomManager
 var isHungerDraining: bool = true
 var isSanityDraining: bool = false
 var hungerDrainRate: float = 2.0    # Hunger points per second
-var sanityDrainRate: float = 5.0    # Sanity points per second
+var sanityDrainRate: float = 100.0    # Sanity points per second
 var sanityRecoveryRate: float = 1.0 # Sanity points per second in safe areas
 var sanityDrainTimer: float = 0.0   # Remaining time for an active drain event
 

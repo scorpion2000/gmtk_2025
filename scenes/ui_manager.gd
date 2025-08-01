@@ -30,14 +30,13 @@ func showEnd(reason: String, loops: int, time: float) -> void:
 	endScreen.visible = true
 	endScreen.showEnd(reason, loops, time)
 
-func onRetryRequested() -> void:
-	print("is retry")
 	# Hide the end screen, unpause and reload the current level
+func onRetryRequested() -> void:
+	get_tree().paused = false
 	endScreen.visible = false
 	upgradeMenu.visible = false
-	get_tree().paused = false
-	
-	get_tree().reload_current_scene()
+	Utilities.remove_scene(get_tree().current_scene)
+	Utilities.switch_scene("Game", get_parent())
 
 func onUpgradeRequested() -> void:
 	# Hide end screen and show upgrade menu
@@ -51,10 +50,10 @@ func onUpgradeBack() -> void:
 
 func onMenuRequested() -> void:
 	# Hide end screen, unpause and load the main menu scene
-	endScreen.visible = false
 	get_tree().paused = false
-	if mainMenuScene:
-		get_tree().change_scene_to_packed(mainMenuScene)
+	endScreen.visible = false
+	Utilities.remove_scene(get_tree().root)
+	Utilities.switch_scene("MainMenu", get_parent())
 
 func onExitRequested() -> void:
 	# Exit the application

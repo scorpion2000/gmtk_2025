@@ -16,7 +16,7 @@ func reset_focus():
 	$VBoxContainer/Start.grab_focus()
 
 func _on_start_pressed():
-	Utilities.switch_scene("SampleGame", self)
+	Utilities.switch_scene("Game", self)
 	AudioManager.play_music_sound()
 
 func _on_option_pressed():
