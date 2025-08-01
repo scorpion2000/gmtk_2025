@@ -6,13 +6,13 @@ size = Vector2(60, 60)
 [node name="LivingRoom" type="Node2D"]
 
 [node name="Background" type="ColorRect" parent="."]
+z_index = -1
 offset_left = -121.0
 offset_top = -121.0
 offset_right = 121.0
 offset_bottom = 121.0
-color = Color(0.2, 0.2, 0.2, 1)
-z_index = -1
 mouse_filter = 2
+color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="Walls" type="StaticBody2D" parent="."]
 

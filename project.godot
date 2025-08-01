@@ -23,8 +23,8 @@ buses/default_bus_layout="res://addons/simple_menu/assets/default_bus_layout.tre
 
 Utilities="*res://addons/simple_menu/scenes/utilities.tscn"
 AudioManager="*res://addons/simple_menu/scenes/audio_manager.tscn"
-StateManager="*res://scripts/systems/StateManager.gd"
 GlobalLoops="*res://scripts/global_loops.gd"
+StateManager="*res://scripts/systems/StateManager.gd"
 
 [editor_plugins]
 

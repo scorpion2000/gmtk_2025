@@ -19,6 +19,7 @@ var player: Node2D
 func _ready() -> void:
 	setup_hud_connections()
 	setup_room_system()
+	RenderingServer.set_default_clear_color(Color("#000000"))
 
 func setup_hud_connections() -> void:
 	# Find the HUD in the scene
