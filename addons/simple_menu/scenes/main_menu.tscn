@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dc388hkklqvvc"]
+[gd_scene load_steps=5 format=3 uid="uid://dc388hkklqvvc"]
 
 [ext_resource type="Theme" uid="uid://cb2tqos08yhkd" path="res://addons/simple_menu/assets/MinimalUI/MinimalUI.tres" id="1_0ajpt"]
 [ext_resource type="Script" uid="uid://62uu0rie8fp5" path="res://addons/simple_menu/scripts/main_menu.gd" id="1_tievw"]
 [ext_resource type="PackedScene" uid="uid://603k3vy4p3f1" path="res://addons/simple_menu/scenes/settings.tscn" id="3_dt7l5"]
+[ext_resource type="PackedScene" uid="uid://bvppkedek6cnn" path="res://scenes/UI/LoopCounter/loop_counter.tscn" id="4_rt5ha"]
 
 [node name="MainMenu" type="Node2D"]
 
@@ -84,6 +85,18 @@ theme = ExtResource("1_0ajpt")
 theme_override_font_sizes/font_size = 24
 text = "Quit
 "
+
+[node name="LoopCounter" parent="UI/MainMenu" instance=ExtResource("4_rt5ha")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.023
+anchor_top = 0.035
+anchor_right = 0.153
+anchor_bottom = 0.113
+offset_left = -0.496002
+offset_top = 0.32
+offset_right = -0.256012
+offset_bottom = -0.224007
 
 [node name="Settings" parent="UI" instance=ExtResource("3_dt7l5")]
 visible = false
