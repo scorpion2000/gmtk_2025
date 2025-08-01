@@ -21,7 +21,7 @@ var mouseOverPanel: bool = false
 func _ready():
 	panelComponent = self.get_node("Panel")
 	textComponent = self.get_node("Panel").get_node("RichTextLabel")
-	originPoint = position
+	originPoint = global_position
 
 	add_child(textTimer)
 	textTimer.one_shot = true
@@ -51,7 +51,7 @@ func start():
 
 func popupToggle():
 	var tween = get_tree().create_tween()
-	tween.tween_property(self, "position", Vector2(originPoint.x, originPoint.y - 160 if position.y == originPoint.y else originPoint.y), 0.5)
+	tween.tween_property(self, "position", Vector2(originPoint.x, originPoint.y - 160 if global_position.y == originPoint.y else originPoint.y), 0.5)
 	tween.finished.connect(displayNextChar)
 
 func displayNextChar():

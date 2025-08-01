@@ -34,7 +34,6 @@ offset_bottom = 160.0
 grow_horizontal = 2
 grow_vertical = 0
 pivot_offset = Vector2(300, 0)
-mouse_filter = 2
 script = ExtResource("1_gquwp")
 
 [node name="Panel" type="Panel" parent="Control"]
@@ -58,6 +57,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[connection signal="mouse_entered" from="Fast" to="Fast" method="enter"]
 [connection signal="pressed" from="Fast" to="Control" method="setText" binds= ["Fast Text Example", 5.0]]
 [connection signal="pressed" from="Normal" to="Control" method="setText" binds= ["Normal Text Example", 10.0]]
 [connection signal="pressed" from="Slow" to="Control" method="setText" binds= ["Slow Text Example", 20.0]]
