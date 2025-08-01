@@ -88,7 +88,6 @@ text = "Quit
 [node name="Settings" parent="UI" instance=ExtResource("3_dt7l5")]
 visible = false
 current_tab = 0
-script = null
 
 [connection signal="pressed" from="UI/MainMenu/VBoxContainer/Start" to="UI/MainMenu" method="_on_start_pressed"]
 [connection signal="pressed" from="UI/MainMenu/VBoxContainer/Option" to="UI/MainMenu" method="_on_option_pressed"]

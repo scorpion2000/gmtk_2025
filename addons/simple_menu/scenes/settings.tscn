@@ -294,19 +294,19 @@ focus_neighbor_bottom = NodePath("../Down")
 layout_mode = 2
 focus_neighbor_top = NodePath("../Up")
 focus_neighbor_bottom = NodePath("../Left")
-action = "Down"
+action = "down"
 
 [node name="Left" parent="Controls/HBoxContainer/VBoxContainer2" instance=ExtResource("4_qu75p")]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Down")
 focus_neighbor_bottom = NodePath("../Right")
-action = "Left"
+action = "left"
 
 [node name="Right" parent="Controls/HBoxContainer/VBoxContainer2" instance=ExtResource("4_qu75p")]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Left")
 focus_neighbor_bottom = NodePath("../../../Back")
-action = "Right"
+action = "right"
 
 [node name="Back" type="Button" parent="Controls"]
 custom_minimum_size = Vector2(100, 0)
