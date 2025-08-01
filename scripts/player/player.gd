@@ -1,5 +1,7 @@
+class_name Player
 extends EntityBase
 
+@export var Stats : StatsList
 @export var walk_speed: float = 100.0
 @export var sprint_speed: float = 180.0
 @export var acceleration: float = 12.0
@@ -20,12 +22,10 @@ func _ready() -> void:
 func apply_speed_modifier(multiplier: float) -> void:
 	speed_modifiers.append(multiplier)
 	update_speeds()
-	print("Applied speed modifier: ", multiplier)
 
 func remove_speed_modifier(multiplier: float) -> void:
 	speed_modifiers.erase(multiplier)
 	update_speeds()
-	print("Removed speed modifier: ", multiplier)
 
 func update_speeds() -> void:
 	# Calculate total multiplier
@@ -36,7 +36,6 @@ func update_speeds() -> void:
 	# Apply to base speeds
 	walk_speed = base_walk_speed * total_multiplier
 	sprint_speed = base_sprint_speed * total_multiplier
-	print("Updated speeds - Walk: ", walk_speed, ", Sprint: ", sprint_speed)
 
 func _physics_process(delta: float): 
 	var direction = Input.get_vector("left", "right", "up", "down")

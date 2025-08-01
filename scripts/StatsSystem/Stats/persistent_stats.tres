@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="StatsList" load_steps=5 format=3 uid="uid://xh8rwgnrd7ac"]
+[gd_resource type="Resource" script_class="StatsList" load_steps=7 format=3 uid="uid://xh8rwgnrd7ac"]
 
 [ext_resource type="Script" uid="uid://ba21q6eugodl6" path="res://scripts/StatsSystem/stats_list.gd" id="1_arjlu"]
 [ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="2_w81ll"]
 [ext_resource type="Resource" uid="uid://ck3pd1ewlqnqo" path="res://scripts/StatsSystem/Stats/stat_health.tres" id="3_nljh3"]
 [ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/stat_speed.tres" id="4_7ylc1"]
+[ext_resource type="Resource" uid="uid://bhiqmrcefb5dn" path="res://scripts/StatsSystem/Stats/stat_sanity.tres" id="5_nljh3"]
+[ext_resource type="Resource" uid="uid://4viqjd7qx6k3" path="res://scripts/StatsSystem/Stats/stat_hunger.tres" id="6_7ylc1"]
 
 [resource]
 resource_name = "Persistent Stats"
 script = ExtResource("1_arjlu")
-statsList = Array[ExtResource("2_w81ll")]([ExtResource("3_nljh3"), ExtResource("4_7ylc1")])
+statsList = Array[ExtResource("2_w81ll")]([ExtResource("3_nljh3"), ExtResource("4_7ylc1"), ExtResource("5_nljh3"), ExtResource("6_7ylc1")])
 metadata/_custom_type_script = "uid://ba21q6eugodl6"

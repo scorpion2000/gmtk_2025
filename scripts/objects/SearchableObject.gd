@@ -28,9 +28,8 @@ func _ready() -> void:
 
 func find_game_manager() -> void:
 	# Look for GameManager in the scene tree
-	var gm_node = get_tree().get_first_node_in_group("game_manager")
-	if gm_node:
-		game_manager = gm_node as GameManager
+	game_manager = get_tree().get_first_node_in_group("GameManager") as GameManager
+	if game_manager:
 		print("SearchableObject found GameManager: ", game_manager)
 	else:
 		# Fallback: search by type
@@ -61,8 +60,8 @@ func give_random_reward() -> void:
 	
 	# Check if loop boost is active
 	var boost_multiplier = 1.0
-	if game_manager and game_manager.is_loop_boost_active():
-		boost_multiplier = game_manager.get_loop_boost_multiplier()
+	if game_manager and game_manager.isLoopBoostActive():
+		boost_multiplier = game_manager.getLoopBoostMultiplier()
 		print("Loop boost active! Multiplier: ", boost_multiplier)
 	
 	if random_value <= loop_chance:
@@ -74,8 +73,8 @@ func give_random_reward() -> void:
 		print("Found ", loops_amount, " loops in ", get_parent().name, "!")
 		
 		# Update the HUD loop display if available
-		if game_manager and game_manager.HudReference:
-			game_manager.HudReference.AddLoops(loops_amount)
+		if game_manager:
+			game_manager.CollectLoop(loops_amount)
 			
 	else:
 		# Give food

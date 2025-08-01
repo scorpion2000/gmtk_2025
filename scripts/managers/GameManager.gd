@@ -1,36 +1,57 @@
-extends Node
+# The GameManager is responsible for all core game logic.
 class_name GameManager
+extends Node
+
+signal loopsUpdated(new_value: int)
 
 # --- Public References ---
-@export var HudReference : GameHUD
-@export var uiManager : UIManager
+@export var HudReference: GameHUD
+@export var UiManager: UIManager
 
-# --- Settings ---
-var hunger_drain_rate: float = 2.0        # Hunger points per second
-var sanity_recovery_rate: float = 1.0     # Sanity points per second in safe areas
+# --- Settings & timers ---
+var player: Player
+var roomManager: RoomManager
+var isHungerDraining: bool = true
+var isSanityDraining: bool = false
+var hungerDrainRate: float = 2.0    # Hunger points per second
+var sanityDrainRate: float = 5.0    # Sanity points per second
+var sanityRecoveryRate: float = 1.0 # Sanity points per second in safe areas
+var sanityDrainTimer: float = 0.0   # Remaining time for an active drain event
 
-# --- Time Tracking ---
-var timeStart: int                        # Set at scene start
-var timePaused: int = 0                   # Accumulated pause time
-var timePausedStart: int = -1             # Timestamp when pause begins
+# --- Buff System ---
+var noiseReductionActive: bool = false
+var loopBoostActive: bool = false
+var loopBoostMultiplier: float = 1.0
+
+# --- Time tracking ---
+var timeStart: int                    # Set at scene start
+var timePaused: int = 0               # Accumulated pause time
+var timePausedStart: int = -1         # Timestamp when pause begins
+
+# --- Loop tracking ---
+var LoopCount: int = 0:
+	set(value):
+		LoopCount = value
+		loopsUpdated.emit(LoopCount)
+
+# References to individual stats for fast access.
+var hungerStat: Stat
+var sanityStat: Stat
+
+func CollectLoop(amount: int) -> void:
+	LoopCount += amount
 
 func _ready() -> void:
-	# Add to game_manager group for easy access
-	add_to_group("game_manager")
+	add_to_group("GameManager")
+	# Locate the player either by direct node name or group.
+	player = get_tree().get_first_node_in_group("player") as Player
 	
 	timeStart = Time.get_ticks_msec()
-	setup_hud_connections()
+	setupRoomSystem()
+	setupHudConnections()
+	setupStatsReferences()
 
-func _process(delta: float) -> void:
-	if not HudReference:
-		return
-
-	process_hunger_drain(delta)
-
-	if is_player_in_safe_area():
-		process_sanity_recovery(delta)
-
-# --- Pause Tracking ---
+# Track pause time so getActiveSeconds() excludes paused duration.
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PAUSED:
 		timePausedStart = Time.get_ticks_msec()
@@ -38,98 +59,183 @@ func _notification(what: int) -> void:
 		timePaused += Time.get_ticks_msec() - timePausedStart
 		timePausedStart = -1
 
+func _process(delta: float) -> void:
+	# If stats are not set up or game is paused, skip processing
+	if !hungerStat or !sanityStat: return
+	
+	# Drain hunger every frame if enabled.
+	if isHungerDraining:
+		processHungerDrain(delta)
+	
+	# Drain sanity during an active drain event.
+	if isSanityDraining:
+		processSanityDrain(delta)
+	elif isPlayerInSafeArea():
+		processSanityRecovery(delta)
+
+# Apply hunger drain through the stat system.
+func processHungerDrain(delta: float) -> void:
+	if !hungerStat: return
+	DamageHunger(hungerDrainRate * delta)
+
+# Apply sanity drain through the stat system and decrease the timer.
+func processSanityDrain(delta: float) -> void:
+	if sanityStat:
+		DamageSanity(sanityDrainRate * delta)
+	sanityDrainTimer -= delta
+	if sanityDrainTimer <= 0.0:
+		isSanityDraining = false
+
+# Recover sanity in safe areas by adding to the stat.
+func processSanityRecovery(delta: float) -> void:
+	if !sanityStat: return
+	RestoreSanity(sanityRecoveryRate * delta)
+
+# Begin a temporary sanity drain event for the specified duration.
+func TriggerSanityDrainEvent(duration: float) -> void:
+	isSanityDraining = true
+	sanityDrainTimer = max(duration, 0.0)
+
+# Utility for directly reducing sanity
+func DamageSanity(amount: float) -> void:
+	if !sanityStat: return
+	sanityStat.subtractValue(amount)
+
+# Utility for directly reducing hunger
+func DamageHunger(amount: float) -> void:
+	if !hungerStat: return
+	hungerStat.subtractValue(amount)
+
+# Utility for directly restoring sanity
+func RestoreSanity(amount: float) -> void:
+	if !sanityStat: return
+	sanityStat.addValue(amount)
+
+# Utility for directly restoring hunger via stat
+func RestoreHunger(amount: float) -> void:
+	if !hungerStat: return
+	hungerStat.addValue(amount)
+
+func isPlayerInSafeArea() -> bool:
+	# TODO: Replace this placeholder with the actual logic that determines
+	# whether the player is currently in a safe area
+	return false
+
+func setupRoomSystem() -> void:
+	# Create or retrieve the RoomManager.
+	roomManager = get_node_or_null("RoomManager") as RoomManager
+
+	# Initialize rooms only if both player and roomManager exist.
+	if player and roomManager:
+		roomManager.initialize_rooms(player)
+		roomManager.room_changed.connect(onRoomChanged)
+		roomManager.room_cleared.connect(onRoomCleared)
+		# Defer minimap setup until the RoomManager has generated level data
+		call_deferred("setupMinimap")
+	else:
+		print("Warning: Player or RoomManager not found!")
+
+func setupMinimap() -> void:
+	if HudReference and roomManager:
+		HudReference.initializeMinimap(roomManager.get_level_generator())
+
+# --- Room system event handlers ---
+func onRoomChanged(newRoom: RoomData) -> void:
+	# Update the minimap on the HUD
+	if HudReference:
+		HudReference.updateMinimapRoom(newRoom)
+	# Trigger sanity drain based on room properties
+	match newRoom.room_type:
+		RoomData.RoomType.BEDROOM:
+			TriggerSanityDrainEvent(1.5)
+		RoomData.RoomType.LIVING_ROOM:
+			if not newRoom.is_cleared:
+				TriggerSanityDrainEvent(1.0)
+
+func onRoomCleared(room: RoomData) -> void:
+	# Reward the player for clearing rooms
+	RestoreSanity(10.0)
+	match room.room_type:
+		RoomData.RoomType.KITCHEN:
+			CollectLoop(5)
+			RestoreHunger(25.0)
+		RoomData.RoomType.SHRINE:
+			pass
+		RoomData.RoomType.BEDROOM:
+			RestoreSanity(15.0)
+
+# --- HUD and end‑game ---
+func setupHudConnections() -> void:
+	if !HudReference:
+		print("Warning: GameHUD not found in scene!")
+		return
+	loopsUpdated.connect(HudReference.updateLoopDisplay)
+	HudReference.updateLoopDisplay(LoopCount)
+	HudReference.SanityDepleted.connect(onSanityDepleted)
+	HudReference.HungerDepleted.connect(onHungerDepleted)
+	HudReference.SanityCritical.connect(onSanityCritical)
+	HudReference.HungerCritical.connect(onHungerCritical)
+
+# Assign references to individual stats from the StatsList.
+func setupStatsReferences() -> void:
+	var statsListRef := player.Stats
+	hungerStat = statsListRef.getStatRef("hunger") as Stat
+	sanityStat = statsListRef.getStatRef("sanity") as Stat
+	if !hungerStat:
+		print("Warning: Hunger stat not found in StatsList")
+	if !sanityStat:
+		print("Warning: Sanity stat not found in StatsList")
+
+# Trigger game over via the StateManager and show the end screen on the UI
+func onSanityDepleted() -> void:
+	StateManager.SetGameOverState()
+	var reason = "Sanity depleted!"
+	var loopsCollected = LoopCount
+	var secondsSurvived = getActiveSeconds()
+	if !UiManager: return
+	UiManager.showEnd(reason, loopsCollected, secondsSurvived)
+
+func onHungerDepleted() -> void:
+	StateManager.SetGameOverState()
+	var reason = "Hunger depleted!"
+	var loopsCollected = LoopCount
+	var secondsSurvived = getActiveSeconds()
+	if !UiManager: return
+	UiManager.showEnd(reason, loopsCollected, secondsSurvived)
+
+func onSanityCritical(_currentValue: float) -> void:
+	pass
+
+func onHungerCritical(_currentValue: float) -> void:
+	pass
+
+## Compute the total time the player has been active, subtracting pause time
 func getActiveSeconds() -> float:
-	var currentTime := Time.get_ticks_msec()
-	var pausedTotal := timePaused
+	var currentTime: int = Time.get_ticks_msec()
+	var pausedTotal: int = timePaused
 	if get_tree().paused and timePausedStart >= 0:
 		pausedTotal += currentTime - timePausedStart
 	return float(currentTime - timeStart - pausedTotal) / 1000.0
 
-# --- Game Logic ---
-func CollectLoop() -> void:
-	if HudReference:
-		HudReference.AddLoops(1)
+func applyNoiseReduction(_multiplier: float) -> void:
+	noiseReductionActive = true
 
-func DamageSanity(amount: float) -> void:
-	if HudReference:
-		var new_sanity = HudReference.GetSanity() - amount
-		HudReference.SetSanity(new_sanity)
+func removeNoiseReduction() -> void:
+	noiseReductionActive = false
 
-func RestoreHunger(amount: float) -> void:
-	if HudReference:
-		var new_hunger = HudReference.GetHunger() + amount
-		HudReference.SetHunger(new_hunger)
+func applyLoopBoost(_chanceMultiplier: float, amountMultiplier: float) -> void:
+	loopBoostActive = true
+	loopBoostMultiplier = amountMultiplier
 
-# --- Buff System ---
-var noise_reduction_active: bool = false
-var loop_boost_active: bool = false
-var loop_boost_multiplier: float = 1.0
+func removeLoopBoost() -> void:
+	loopBoostActive = false
+	loopBoostMultiplier = 1.0
 
-func apply_noise_reduction(multiplier: float) -> void:
-	noise_reduction_active = true
-	print("GameManager: Applied noise reduction with multiplier ", multiplier)
+func getNoiseReductionMultiplier() -> float:
+	return 0.9 if noiseReductionActive else 1.0
 
-func remove_noise_reduction() -> void:
-	noise_reduction_active = false
-	print("GameManager: Removed noise reduction")
+func getLoopBoostMultiplier() -> float:
+	return loopBoostMultiplier if loopBoostActive else 1.0
 
-func apply_loop_boost(chance_multiplier: float, amount_multiplier: float) -> void:
-	loop_boost_active = true
-	loop_boost_multiplier = amount_multiplier
-	print("GameManager: Applied loop boost - chance: ", chance_multiplier, ", amount: ", amount_multiplier)
-
-func remove_loop_boost() -> void:
-	loop_boost_active = false
-	loop_boost_multiplier = 1.0
-	print("GameManager: Removed loop boost")
-
-func get_noise_reduction_multiplier() -> float:
-	return 0.9 if noise_reduction_active else 1.0
-
-func get_loop_boost_multiplier() -> float:
-	return loop_boost_multiplier if loop_boost_active else 1.0
-
-func is_loop_boost_active() -> bool:
-	return loop_boost_active
-
-# --- Internal Tick ---
-func process_hunger_drain(delta: float) -> void:
-	var new_hunger = HudReference.GetHunger() - (hunger_drain_rate * delta)
-	HudReference.SetHunger(new_hunger)
-
-func process_sanity_recovery(delta: float) -> void:
-	var new_sanity = HudReference.GetSanity() + (sanity_recovery_rate * delta)
-	HudReference.SetSanity(new_sanity)
-
-func is_player_in_safe_area() -> bool:
-	# TODO: Implement actual detection logic
-	return false
-
-# --- HUD Signals ---
-func setup_hud_connections() -> void:
-	if not HudReference:
-		print("Warning: GameHUD not found in scene!")
-		return
-
-	HudReference.SanityDepleted.connect(_on_sanity_depleted)
-	HudReference.HungerDepleted.connect(_on_hunger_depleted)
-	HudReference.SanityCritical.connect(_on_sanity_critical)
-	HudReference.HungerCritical.connect(_on_hunger_critical)
-
-func _on_sanity_depleted() -> void:
-	var reason = "Sanity depleted!"
-	var loopsCollected = 0 # Will be connected to loop collection system later
-	var secondsSurvived = getActiveSeconds()
-	uiManager.showEnd(reason, loopsCollected, secondsSurvived)
-
-func _on_hunger_depleted() -> void:
-	var reason = "Hunger depleted!"
-	var loopsCollected = 0 # Will be connected to loop collection system later
-	var secondsSurvived = getActiveSeconds()
-	uiManager.showEnd(reason, loopsCollected, secondsSurvived)
-
-func _on_sanity_critical(current_value: float) -> void:
-	print("Warning: Sanity critical! Current:", current_value)
-
-func _on_hunger_critical(current_value: float) -> void:
-	print("Warning: Hunger critical! Current:", current_value)
+func isLoopBoostActive() -> bool:
+	return loopBoostActive

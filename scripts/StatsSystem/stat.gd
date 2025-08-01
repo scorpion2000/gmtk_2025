@@ -30,18 +30,24 @@ func getValue() -> float:
 # Add to currentValue, then clamp within bounds.
 func addValue(newValue : float):
 	currentValue = clampValue(currentValue + newValue)
+	statChanged.emit(resource_name, getValue())
 
 # Set currentValue directly, clamped.
 func setValue(newValue : float):
 	currentValue = clampValue(newValue)
+	statChanged.emit(resource_name, getValue())
 
 # Subtract from currentValue, then clamp within bounds.
 func subtractValue(newValue : float):
 	currentValue = clampValue(currentValue - newValue)
+	statChanged.emit(resource_name, getValue())
 
 # Central clamp helper so clamping rules live in one place.
 func clampValue(value : float) -> float:
 	return clamp(value, minValue, maxValue)
+
+func getPercentage() -> float:
+	return clampValue(currentValue / maxValue)
 
 # ---------- Modifier Functions ----------
 # Allow external systems to add/remove modifiers.

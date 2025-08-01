@@ -4,19 +4,17 @@
 [ext_resource type="PackedScene" uid="uid://bvk8x7p2qm1n8" path="res://scenes/GameHUD.tscn" id="2_hud"]
 [ext_resource type="PackedScene" uid="uid://cy8oav5o3q0sr" path="res://scenes/objects/SearchableObject.tscn" id="3_searchable"]
 [ext_resource type="Script" uid="uid://cog8ddhnycnp" path="res://scripts/managers/GameManager.gd" id="4_game_manager"]
-[ext_resource type="PackedScene" path="res://scenes/objects/Altar.tscn" id="5_altar"]
+[ext_resource type="PackedScene" uid="uid://dql5bk2bqq4ni" path="res://scenes/objects/Altar.tscn" id="5_altar"]
 
-[node name="InteractableTest" type="Node2D"]
+[node name="InteractableTest" type="Node2D" node_paths=PackedStringArray("HudReference")]
+script = ExtResource("4_game_manager")
+HudReference = NodePath("CanvasLayer/GameHUD")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GameHUD" parent="CanvasLayer" instance=ExtResource("2_hud")]
-
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("HudReference")]
-script = ExtResource("4_game_manager")
-HudReference = NodePath("../CanvasLayer/GameHUD")
 
 [node name="Environment" type="Node2D" parent="."]
 
