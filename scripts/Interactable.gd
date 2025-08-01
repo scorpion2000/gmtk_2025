@@ -29,12 +29,10 @@ func find_hud() -> void:
 	var hud_node = get_tree().get_first_node_in_group("hud")
 	if hud_node:
 		hud = hud_node as GameHUD
-		print("Found HUD via group: ", hud)
 	else:
 		# Fallback: search by type
 		var root = get_tree().current_scene
 		hud = _find_node_by_class(root, "GameHUD") as GameHUD
-		print("Found HUD via search: ", hud)
 
 func _find_node_by_class(node: Node, target_class: String) -> Node:
 	if node.get_script() and node.get_script().get_global_name() == target_class:

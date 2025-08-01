@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cle6s5xvi707"]
+[gd_scene load_steps=5 format=3 uid="uid://cle6s5xvi707"]
 
 [ext_resource type="PackedScene" uid="uid://ckgf4x4ssqojg" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://bvk8x7p2qm1n8" path="res://scenes/GameHUD.tscn" id="2_hud"]
 [ext_resource type="PackedScene" uid="uid://cy8oav5o3q0sr" path="res://scenes/objects/SearchableObject.tscn" id="3_searchable"]
+[ext_resource type="Script" uid="uid://cog8ddhnycnp" path="res://scripts/managers/GameManager.gd" id="4_game_manager"]
 
 [node name="InteractableTest" type="Node2D"]
 
@@ -11,6 +12,10 @@
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GameHUD" parent="CanvasLayer" instance=ExtResource("2_hud")]
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("HudReference")]
+script = ExtResource("4_game_manager")
+HudReference = NodePath("../CanvasLayer/GameHUD")
 
 [node name="Environment" type="Node2D" parent="."]
 
@@ -28,15 +33,17 @@ position = Vector2(0, -200)
 [node name="InstructionLabel" type="Label" parent="Instructions"]
 offset_left = 20.0
 offset_top = 20.0
-offset_right = 400.0
-offset_bottom = 120.0
+offset_right = 450.0
+offset_bottom = 150.0
 text = "Interaction Test Scene
 
 WASD - Move
 Shift - Sprint
 E - Interact (hold near objects)
 
-Objects:
-- Chest (3s): Right
-- Barrel (2s): Bottom-left  
-- Crate (5s): Top"
+Search objects to find:
+- Loops (60% chance) - Currency for upgrades
+- Food (40% chance) - Restores hunger bar
+
+Objects turn gray when searched
+Watch your hunger bar (drains over time)!"

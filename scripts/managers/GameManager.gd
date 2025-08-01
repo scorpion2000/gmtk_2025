@@ -15,6 +15,9 @@ var timePaused: int = 0                   # Accumulated pause time
 var timePausedStart: int = -1             # Timestamp when pause begins
 
 func _ready() -> void:
+	# Add to game_manager group for easy access
+	add_to_group("game_manager")
+	
 	timeStart = Time.get_ticks_msec()
 	setup_hud_connections()
 

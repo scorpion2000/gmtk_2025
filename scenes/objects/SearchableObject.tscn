@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cy8oav5o3q0sr"]
+[gd_scene load_steps=5 format=3 uid="uid://cy8oav5o3q0sr"]
 
 [ext_resource type="PackedScene" uid="uid://bx7m8v4n2qaqr" path="res://scenes/systems/Interactable.tscn" id="1_interactable"]
+[ext_resource type="Script" uid="uid://bakolghemdp" path="res://scripts/objects/SearchableObject.gd" id="2_searchable_script"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_object"]
 font_size = 12
@@ -22,7 +23,7 @@ offset_left = -30.0
 offset_top = -50.0
 offset_right = 30.0
 offset_bottom = -30.0
-text = "Object"
+text = "Chest"
 label_settings = SubResource("LabelSettings_object")
 horizontal_alignment = 1
 
@@ -30,4 +31,11 @@ horizontal_alignment = 1
 shape = SubResource("RectangleShape2D_object")
 
 [node name="Interactable" parent="." instance=ExtResource("1_interactable")]
+script = ExtResource("2_searchable_script")
+min_loops = 1
+max_loops = 5
+min_food = 15.0
+max_food = 30.0
+loop_chance = 0.6
+food_chance = 0.4
 interaction_prompt = "Search"
