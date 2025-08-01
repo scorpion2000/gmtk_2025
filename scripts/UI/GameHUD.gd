@@ -16,6 +16,11 @@ var bar_width: float = 200.0
 @onready var sanity_bar_fill: ColorRect = $TopLeftContainer/SanityBarContainer/SanityBarBackground/SanityBarFill
 @onready var hunger_bar_fill: ColorRect = $TopLeftContainer/HungerBarContainer/HungerBarBackground/HungerBarFill
 @onready var mini_map: MiniMap = $MiniMap
+@onready var interaction_container: Control = $InteractionContainer
+@onready var circular_progress_bar: Control = $InteractionContainer/CircularProgressBar
+@onready var progress_fill: ColorRect = $InteractionContainer/CircularProgressBar/ProgressFill
+@onready var hold_e_label: Label = $InteractionContainer/HoldELabel
+@onready var interaction_label: Label = $InteractionContainer/InteractionLabel
 
 # Signals for when bars reach critical levels
 signal SanityDepleted
@@ -24,6 +29,9 @@ signal SanityCritical(current_value: float)
 signal HungerCritical(current_value: float)
 
 func _ready() -> void:
+	# Add to hud group for easy access
+	add_to_group("hud")
+	
 	# Force initial update after nodes are ready
 	call_deferred("initial_setup")
 
@@ -116,3 +124,20 @@ func initialize_minimap(level_generator: LevelGenerator) -> void:
 func update_minimap_room(room: RoomData) -> void:
 	if mini_map:
 		mini_map.update_current_room(room)
+
+# Interaction progress bar functions
+func show_interaction_progress(prompt_text: String = "Search") -> void:
+	if interaction_container and interaction_label and hold_e_label:
+		interaction_label.text = prompt_text
+		hold_e_label.text = "Hold E"
+		interaction_container.visible = true
+		if progress_fill:
+			progress_fill.anchor_right = 0.0
+
+func hide_interaction_progress() -> void:
+	if interaction_container:
+		interaction_container.visible = false
+
+func update_interaction_progress(progress: float) -> void:
+	if progress_fill:
+		progress_fill.anchor_right = clampf(progress, 0.0, 1.0)

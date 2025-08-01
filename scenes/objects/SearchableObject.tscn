@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://cy8oav5o3q0sr"]
+
+[ext_resource type="PackedScene" uid="uid://bx7m8v4n2qaqr" path="res://scenes/systems/Interactable.tscn" id="1_interactable"]
+[ext_resource type="Script" uid="uid://bakolghemdp" path="res://scripts/objects/SearchableObject.gd" id="2_searchable_script"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_object"]
+font_size = 12
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_object"]
+size = Vector2(64, 64)
+
+[node name="SearchableObject" type="StaticBody2D"]
+
+[node name="Visual" type="ColorRect" parent="."]
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.6, 0.4, 0.2, 1)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -50.0
+offset_right = 30.0
+offset_bottom = -30.0
+text = "Chest"
+label_settings = SubResource("LabelSettings_object")
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_object")
+
+[node name="Interactable" parent="." instance=ExtResource("1_interactable")]
+script = ExtResource("2_searchable_script")
+min_loops = 1
+max_loops = 5
+min_food = 15.0
+max_food = 30.0
+loop_chance = 0.6
+food_chance = 0.4
+interaction_prompt = "Search"
