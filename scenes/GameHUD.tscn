@@ -101,3 +101,78 @@ offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="InteractionContainer" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 50.0
+offset_top = -50.0
+offset_right = 150.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CircularProgressBar" type="Control" parent="InteractionContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="InteractionContainer/CircularProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.2, 0.2, 0.8)
+
+[node name="ProgressFill" type="ColorRect" parent="InteractionContainer/CircularProgressBar"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.8, 0.8, 0.2, 1)
+
+[node name="HoldELabel" type="Label" parent="InteractionContainer"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -30.0
+offset_top = -75.0
+offset_right = 30.0
+offset_bottom = -55.0
+grow_horizontal = 2
+text = "Hold E"
+horizontal_alignment = 1
+
+[node name="InteractionLabel" type="Label" parent="InteractionContainer"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Search Chest"
+horizontal_alignment = 1
