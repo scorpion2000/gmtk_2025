@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cle6s5xvi707"]
+[gd_scene load_steps=6 format=3 uid="uid://cle6s5xvi707"]
 
 [ext_resource type="PackedScene" uid="uid://ckgf4x4ssqojg" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://bvk8x7p2qm1n8" path="res://scenes/GameHUD.tscn" id="2_hud"]
 [ext_resource type="PackedScene" uid="uid://cy8oav5o3q0sr" path="res://scenes/objects/SearchableObject.tscn" id="3_searchable"]
 [ext_resource type="Script" uid="uid://cog8ddhnycnp" path="res://scripts/managers/GameManager.gd" id="4_game_manager"]
+[ext_resource type="PackedScene" path="res://scenes/objects/Altar.tscn" id="5_altar"]
 
 [node name="InteractableTest" type="Node2D"]
 
@@ -28,6 +29,9 @@ position = Vector2(-150, 100)
 [node name="TestCrate" parent="Environment" instance=ExtResource("3_searchable")]
 position = Vector2(0, -200)
 
+[node name="TestAltar" parent="Environment" instance=ExtResource("5_altar")]
+position = Vector2(300, 200)
+
 [node name="Instructions" type="CanvasLayer" parent="."]
 
 [node name="InstructionLabel" type="Label" parent="Instructions"]
@@ -38,12 +42,17 @@ offset_bottom = 150.0
 text = "Interaction Test Scene
 
 WASD - Move
-Shift - Sprint
+Shift - Sprint  
 E - Interact (hold near objects)
 
 Search objects to find:
 - Loops (60% chance) - Currency for upgrades
 - Food (40% chance) - Restores hunger bar
+
+Use Altar (10 loops) for random buffs:
+- Speed Boost (+10% movement)
+- Noise Reduction (-10% noise radius) 
+- Loop Boost (+100% loops/food)
 
 Objects turn gray when searched
 Watch your hunger bar (drains over time)!"

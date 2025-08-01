@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://dql5bk2bqq4ni"]
+
+[ext_resource type="Script" path="res://scripts/objects/Altar.gd" id="1_7k8l6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3xh85"]
+size = Vector2(100, 100)
+
+[node name="Altar" type="Node2D"]
+
+[node name="Interactable" type="Area2D" parent="."]
+script = ExtResource("1_7k8l6")
+interaction_time = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+shape = SubResource("RectangleShape2D_3xh85")
+
+[node name="Visual" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.6, 0.4, 0.8, 1)
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -35.0
+offset_top = -12.5
+offset_right = 35.0
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Altar"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CostLabel" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = 15.0
+offset_right = 25.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "10 loops"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -22,6 +22,12 @@ var bar_width: float = 200.0
 @onready var hold_e_label: Label = $InteractionContainer/HoldELabel
 @onready var interaction_label: Label = $InteractionContainer/InteractionLabel
 
+# Buff icon references
+@onready var buff_icons_container: VBoxContainer = $BuffIconsContainer
+@onready var speed_icon: ColorRect = $BuffIconsContainer/SpeedIcon
+@onready var noise_icon: ColorRect = $BuffIconsContainer/NoiseIcon
+@onready var loop_icon: ColorRect = $BuffIconsContainer/LoopIcon
+
 # Signals for when bars reach critical levels
 signal SanityDepleted
 signal HungerDepleted
@@ -141,3 +147,34 @@ func hide_interaction_progress() -> void:
 func update_interaction_progress(progress: float) -> void:
 	if progress_fill:
 		progress_fill.anchor_right = clampf(progress, 0.0, 1.0)
+
+# Buff icon management functions
+func show_speed_buff() -> void:
+	if speed_icon:
+		speed_icon.visible = true
+		print("HUD: Showing speed buff icon")
+
+func hide_speed_buff() -> void:
+	if speed_icon:
+		speed_icon.visible = false
+		print("HUD: Hiding speed buff icon")
+
+func show_noise_buff() -> void:
+	if noise_icon:
+		noise_icon.visible = true
+		print("HUD: Showing noise buff icon")
+
+func hide_noise_buff() -> void:
+	if noise_icon:
+		noise_icon.visible = false
+		print("HUD: Hiding noise buff icon")
+
+func show_loop_buff() -> void:
+	if loop_icon:
+		loop_icon.visible = true
+		print("HUD: Showing loop buff icon")
+
+func hide_loop_buff() -> void:
+	if loop_icon:
+		loop_icon.visible = false
+		print("HUD: Hiding loop buff icon")

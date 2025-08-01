@@ -5,23 +5,18 @@ class_name Interactable
 @export var interaction_time: float = 3.0
 @export var interaction_prompt: String = "Search"
 
-# State
 var is_player_nearby: bool = false
 var is_interacting: bool = false
 var interaction_progress: float = 0.0
 var hud: GameHUD
 
-# Signals
 signal interaction_completed
 signal interaction_started
 signal interaction_cancelled
 
 func _ready() -> void:
-	# Connect area signals
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	
-	# Find the HUD
 	call_deferred("find_hud")
 
 func find_hud() -> void:
@@ -60,8 +55,6 @@ func _physics_process(delta: float) -> void:
 func start_interaction() -> void:
 	is_interacting = true
 	interaction_progress = 0.0
-	# Don't call show_interaction_progress here since it's already shown when entering area
-	# Just reset the progress bar to 0
 	if hud:
 		hud.update_interaction_progress(0.0)
 	interaction_started.emit()
@@ -87,7 +80,6 @@ func complete_interaction() -> void:
 func cancel_interaction() -> void:
 	is_interacting = false
 	interaction_progress = 0.0
-	# Reset progress bar to 0 but keep the "Hold E" prompt visible
 	if hud:
 		hud.update_interaction_progress(0.0)
 	interaction_cancelled.emit()
