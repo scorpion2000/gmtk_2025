@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckgf4x4ssqojg"]
+[gd_scene load_steps=6 format=3 uid="uid://ckgf4x4ssqojg"]
 
 [ext_resource type="Script" uid="uid://c8porc2rhf8uh" path="res://scripts/player/player.gd" id="1_g2els"]
 [ext_resource type="Resource" uid="uid://xh8rwgnrd7ac" path="res://scripts/StatsSystem/Stats/persistent_stats.tres" id="2_dqkch"]
 [ext_resource type="Texture2D" uid="uid://cesvra3ix77tm" path="res://assets/Art/icon.svg" id="2_qhqgy"]
+[ext_resource type="Script" uid="uid://bj4fwoo8lt10" path="res://scripts/entities/components/noiseGenerator.gd" id="4_dqkch"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4flbx"]
 size = Vector2(32, 32)
@@ -21,3 +22,8 @@ shape = SubResource("RectangleShape2D_4flbx")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2.955, 2.955)
+
+[node name="Timer" type="Timer" parent="." node_paths=PackedStringArray("parent")]
+autostart = true
+script = ExtResource("4_dqkch")
+parent = NodePath("..")

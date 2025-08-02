@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://cmnss4sqge7av"]
+[gd_scene load_steps=8 format=3 uid="uid://cmnss4sqge7av"]
 
+[ext_resource type="PackedScene" uid="uid://dw34a7cwmvlfq" path="res://scenes/entities/basic_ai.tscn" id="1_7ns7f"]
 [ext_resource type="Script" uid="uid://cxuf2mpqak3mw" path="res://scripts/entities/basic_ai.gd" id="1_ls053"]
 [ext_resource type="Texture2D" uid="uid://cesvra3ix77tm" path="res://assets/Art/icon.svg" id="2_1m8sh"]
 [ext_resource type="Script" uid="uid://d3mgcqsoexkpx" path="res://scripts/entities/components/pathGenerator.gd" id="3_hhqxy"]
@@ -17,27 +18,8 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(12, 12, 6, 642, 1137, 6
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_y5061")
 
-[node name="Basic AI" type="CharacterBody2D" parent="."]
+[node name="Basic AI" parent="." instance=ExtResource("1_7ns7f")]
 position = Vector2(302, 251)
-script = ExtResource("1_ls053")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Basic AI"]
-shape = SubResource("CircleShape2D_t6o6c")
-
-[node name="Sprite2D" type="Sprite2D" parent="Basic AI"]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_1m8sh")
-
-[node name="Timer" type="Timer" parent="Basic AI" node_paths=PackedStringArray("parent")]
-autostart = true
-script = ExtResource("3_hhqxy")
-parent = NodePath("..")
-
-[node name="Timer2" type="Timer" parent="Basic AI" node_paths=PackedStringArray("parent")]
-one_shot = true
-autostart = true
-script = ExtResource("4_hhqxy")
-parent = NodePath("..")
 
 [node name="Basic AI2" type="CharacterBody2D" parent="."]
 position = Vector2(380, 263)
