@@ -10,8 +10,9 @@ signal retryPressed()
 @onready var summaryLabel: Label = %SummaryResults
 
 func _ready() -> void:
+	Utilities.save_data()
 	%RetryBtn.pressed.connect(onRetryPressed)
-	%UpgradeBtn.pressed.connect(onUpgradePressed)
+	%ShopBtn.pressed.connect(onShopPressed)
 	%MenuBtn.pressed.connect(onMenuPressed)
 	%ExitBtn.pressed.connect(onExitPressed)
 
@@ -26,7 +27,7 @@ func onRetryPressed() -> void:
 	Utilities.switch_scene("Game", self)
 	retryPressed.emit()
 
-func onUpgradePressed() -> void:
+func onShopPressed() -> void:
 	Utilities.switch_scene("Shop", self)
 	upgradePressed.emit()
 

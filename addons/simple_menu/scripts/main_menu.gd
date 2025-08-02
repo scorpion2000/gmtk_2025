@@ -5,6 +5,7 @@ extends Control
 var gameScene := "res://scenes/game.tscn"
 
 func _ready():
+	print(ProjectSettings.globalize_path("user://settings.cfg"))
 	$VBoxContainer/Start.grab_focus()
 	if option_menu:
 		option_menu.pre_scene = self
@@ -20,6 +21,9 @@ func reset_focus():
 func _on_start_pressed():
 	Utilities.switch_scene("Game", get_parent().get_parent())
 	AudioManager.play_music_sound()
+
+func _on_shop_pressed() -> void:
+	Utilities.switch_scene("Shop", get_parent().get_parent())
 
 func _on_option_pressed():
 	if option_menu:
