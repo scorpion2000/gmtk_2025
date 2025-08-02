@@ -2,6 +2,8 @@ extends Control
 
 @onready var option_menu: TabContainer = $"../Settings"
 
+var gameScene := "res://scenes/game.tscn"
+
 func _ready():
 	$VBoxContainer/Start.grab_focus()
 	if option_menu:
@@ -16,7 +18,7 @@ func reset_focus():
 	$VBoxContainer/Start.grab_focus()
 
 func _on_start_pressed():
-	Utilities.switch_scene("Game", self)
+	Utilities.switch_scene("Game", get_parent().get_parent())
 	AudioManager.play_music_sound()
 
 func _on_option_pressed():

@@ -5,12 +5,9 @@ extends Panel
 signal retryPressed()
 signal backPressed()
 
-var StatList : StatsList
+@export var StatList : StatsList
 
 func _ready():
-	var player : Player = get_tree().get_first_node_in_group("player")
-	StatList = player.Stats
-	
 	%RetryBtn.pressed.connect(onRetryPressed)
 	%BackBtn.pressed.connect(onBackPressed)
 	## Example of how to get and add stats
@@ -21,7 +18,9 @@ func _ready():
 	pass
 
 func onRetryPressed() -> void:
+	Utilities.switch_scene("Game", self)
 	retryPressed.emit()
 
 func onBackPressed() -> void:
+	Utilities.backShowEnd()
 	backPressed.emit()

@@ -45,7 +45,7 @@ func _generate_branching_layout():
 	var rooms_created = 1
 	var target_rooms = randi_range(min_rooms, max_rooms)
 	
-	print("Generating level with ", target_rooms, " rooms...")
+	#print("Generating level with ", target_rooms, " rooms...")
 	
 	# Create rooms until we reach target count
 	while rooms_created < target_rooms and not expansion_candidates.is_empty():
@@ -74,7 +74,7 @@ func _generate_branching_layout():
 		_place_room(new_room, new_x, new_y)
 		
 		rooms_created += 1
-		print("Created room ", rooms_created, "/", target_rooms, " at (", new_x, ",", new_y, ")")
+		#print("Created room ", rooms_created, "/", target_rooms, " at (", new_x, ",", new_y, ")")
 		
 		# Always add new room to expansion candidates if we're under minimum
 		if rooms_created < min_rooms:
@@ -88,7 +88,7 @@ func _generate_branching_layout():
 		if rooms_created >= min_rooms and randf() < 0.15:  # 15% chance to stop expanding from this room
 			expansion_candidates.erase(base_room)
 	
-	print("Level generation complete: ", rooms_created, " rooms created")
+	#print("Level generation complete: ", rooms_created, " rooms created")
 
 # Add special rooms (kitchen, shrine, bedroom, bathroom)
 func _add_special_rooms():

@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://djlsby7yx0e6s" path="res://scripts/UI/EndScreen/end_screen.gd" id="1_b048y"]
 
 [node name="EndScreen" type="Control"]
-process_mode = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +19,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" groups=["End"]]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

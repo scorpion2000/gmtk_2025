@@ -6,7 +6,6 @@ signal loopsUpdated(newValue: int)
 
 # --- Public References ---
 @export var HudReference: GameHUD
-@export var UiManager: UIManager
 
 # --- Settings & timers ---
 var player: Player
@@ -192,16 +191,14 @@ func onSanityDepleted() -> void:
 	var reason = "Sanity depleted!"
 	var loopsCollected = LoopCount
 	var secondsSurvived = getActiveSeconds()
-	if !UiManager: return
-	UiManager.showEnd(reason, loopsCollected, secondsSurvived)
+	Utilities.showEnd(reason, loopsCollected, secondsSurvived)
 
 func onHungerDepleted() -> void:
 	StateManager.SetGameOverState()
 	var reason = "Hunger depleted!"
 	var loopsCollected = LoopCount
 	var secondsSurvived = getActiveSeconds()
-	if !UiManager: return
-	UiManager.showEnd(reason, loopsCollected, secondsSurvived)
+	Utilities.showEnd(reason, loopsCollected, secondsSurvived)
 
 func onSanityCritical(_currentValue: float) -> void:
 	pass

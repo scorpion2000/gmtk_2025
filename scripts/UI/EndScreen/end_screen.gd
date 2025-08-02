@@ -23,15 +23,19 @@ func showEnd(reason: String, loopsCollected: int, secondsSurvived: float) -> voi
 
 # Buttons are wired in the editor
 func onRetryPressed() -> void:
+	Utilities.switch_scene("Game", self)
 	retryPressed.emit()
 
 func onUpgradePressed() -> void:
+	Utilities.switch_scene("Shop", self)
 	upgradePressed.emit()
 
 func onMenuPressed() -> void:
+	Utilities.switch_scene("Menu", self)
 	menuPressed.emit()
 
 func onExitPressed() -> void:
+	get_tree().quit()
 	exitPressed.emit()
 
 func fmtTime(t: float) -> String:

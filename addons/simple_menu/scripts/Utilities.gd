@@ -1,12 +1,21 @@
 extends Node
 
 # Scene manager
-@export var scenes: Array[PackedScene] = []
-@export var scene_map: Dictionary = {}
+
+var scenes: Dictionary = {
+	Menu = "res://addons/simple_menu/scenes/main_menu.tscn",
+	Game = "res://scenes/game.tscn",
+	Shop = "res://scenes/UI/UpgradeMenu/upgrade_menu.tscn",
+	End = "res://scenes/UI/EndScreen/end_screen.tscn"
+}
 @export var is_persistence: bool = false
 
 const PATH = "user://settings.cfg"
 var config: ConfigFile
+
+var endReason
+var endLoops
+var endTime
 
 func _ready():
 	config = ConfigFile.new()
@@ -53,34 +62,32 @@ func load_video_settings():
 	DisplayServer.window_set_vsync_mode(vsync_index)
 
 # Scene manager
-func switch_scene(scene_name: StringName, cur_scene: Node):
-	print("Attempting to switch to scene: ", scene_name)
-	print("Available scenes in scene_map: ", scene_map.keys())
-	print("scene_map contents: ", scene_map)
-	print("scenes array length: ", scenes.size())
-	
-	if not scene_map.has(scene_name):
+func switch_scene(scene_name: StringName, curScene : Node):
+	if not scenes.has(scene_name):
 		print("ERROR: Scene '", scene_name, "' not found in scene_map")
 		return
-	
-	var scene_index = scene_map[scene_name]
-	if scene_index >= scenes.size():
-		print("ERROR: Scene index ", scene_index, " is out of bounds. scenes array size: ", scenes.size())
-		return
-	
-	if scenes[scene_index] == null:
-		print("ERROR: Scene at index ", scene_index, " is null")
-		return
-		
-	var scene = scenes[scene_index].instantiate()
-	get_tree().root.add_child(scene)
-	cur_scene.queue_free()
+	#
+	#call_deferred("curScene.queue_free()")
+	get_tree().change_scene_to_file(scenes[scene_name])
 
-func hide_scene(scene):
-	scene.hide()
+func showEnd(reason : String, loops : int, time : float):
+	endReason = reason
+	endLoops = loops
+	endTime = time
+	get_tree().change_scene_to_file(scenes["End"])
+	await get_tree().process_frame
 
-func remove_scene(scene):
-	get_tree().root.remove_child(scene)
+	var end_node  := get_tree().current_scene
 
-func delete_scene(scene):
-	scene.queue_free()
+	# Now call the method
+	end_node.showEnd(endReason, endLoops, endTime)
+
+func backShowEnd():
+	get_tree().change_scene_to_packed(load(scenes["End"]))
+	await get_tree().process_frame
+	await get_tree().process_frame
+
+	var end_node  := get_tree().current_scene
+
+	# Now call the method
+	end_node.showEnd(endReason, endLoops, endTime)
