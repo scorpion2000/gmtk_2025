@@ -7,7 +7,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(60, 60)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_81dmy"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_srusa"]
 texture = ExtResource("1_srusa")
 5:0/0 = 0
 6:0/0 = 0
@@ -3866,7 +3866,7 @@ texture = ExtResource("1_srusa")
 66:112/0 = 0
 67:112/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uslqx"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ngwsf"]
 texture = ExtResource("2_ngwsf")
 9:0/0 = 0
 10:0/0 = 0
@@ -5244,7 +5244,7 @@ texture = ExtResource("2_ngwsf")
 6:106/0 = 0
 7:106/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vdbes"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_q5gwu"]
 texture = ExtResource("3_q5gwu")
 1:0/0 = 0
 2:0/0 = 0
@@ -5945,9 +5945,9 @@ texture = ExtResource("3_q5gwu")
 15:48/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_bxm2g"]
-sources/0 = SubResource("TileSetAtlasSource_81dmy")
-sources/1 = SubResource("TileSetAtlasSource_uslqx")
-sources/2 = SubResource("TileSetAtlasSource_vdbes")
+sources/0 = SubResource("TileSetAtlasSource_srusa")
+sources/1 = SubResource("TileSetAtlasSource_ngwsf")
+sources/2 = SubResource("TileSetAtlasSource_q5gwu")
 
 [node name="KitchenRoom" type="Node2D"]
 
