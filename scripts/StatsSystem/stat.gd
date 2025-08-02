@@ -26,22 +26,42 @@ func getValue() -> float:
 	# Clamp to enforce min and max bounds.
 	return clamp(value, minValue, maxValue)
 
+func getMaxValue() -> float:
+	var value := maxValue
+	_modifiers.sort_custom(_compareModOrder)
+	for mod in _modifiers:
+		value = mod.modify(maxValue, value)
+	return clamp(value, minValue, 999999.0)
+
+func getMinValue() -> float:
+	var value := minValue
+	_modifiers.sort_custom(_compareModOrder)
+	for mod in _modifiers:
+		value = mod.modify(minValue, value)
+	return clamp(value, 0, maxValue)
+
 # ---------- Helper Functions ----------
 # Add to currentValue, then clamp within bounds.
 func addValue(newValue : float):
 	currentValue = clampValue(currentValue + newValue)
+	statChanged.emit(resource_name, getValue())
 
 # Set currentValue directly, clamped.
 func setValue(newValue : float):
 	currentValue = clampValue(newValue)
+	statChanged.emit(resource_name, getValue())
 
 # Subtract from currentValue, then clamp within bounds.
 func subtractValue(newValue : float):
 	currentValue = clampValue(currentValue - newValue)
+	statChanged.emit(resource_name, getValue())
 
 # Central clamp helper so clamping rules live in one place.
 func clampValue(value : float) -> float:
 	return clamp(value, minValue, maxValue)
+
+func getPercentage() -> float:
+	return clampValue(getValue() / getMaxValue())
 
 # ---------- Modifier Functions ----------
 # Allow external systems to add/remove modifiers.

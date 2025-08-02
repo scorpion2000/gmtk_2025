@@ -32,7 +32,7 @@ enabled=PackedStringArray("res://addons/Hide/plugin.cfg")
 
 [global_group]
 
-UpgradeButton=""
+player=""
 
 [input]
 

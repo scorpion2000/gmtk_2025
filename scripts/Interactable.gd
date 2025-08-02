@@ -56,15 +56,14 @@ func start_interaction() -> void:
 	is_interacting = true
 	interaction_progress = 0.0
 	if hud:
-		hud.update_interaction_progress(0.0)
+		hud.updateInteractionProgress(0.0)
 	interaction_started.emit()
-	print("Starting interaction with: ", get_parent().name)
 
 func update_interaction(delta: float) -> void:
 	interaction_progress += delta / interaction_time
 	
 	if hud:
-		hud.update_interaction_progress(interaction_progress)
+		hud.updateInteractionProgress(interaction_progress)
 	
 	if interaction_progress >= 1.0:
 		complete_interaction()
@@ -73,33 +72,29 @@ func complete_interaction() -> void:
 	is_interacting = false
 	interaction_progress = 1.0
 	if hud:
-		hud.hide_interaction_progress()
+		hud.hideInteractionProgress()
 	interaction_completed.emit()
-	print("Interaction completed with: ", get_parent().name)
 
 func cancel_interaction() -> void:
 	is_interacting = false
 	interaction_progress = 0.0
 	if hud:
-		hud.update_interaction_progress(0.0)
+		hud.updateInteractionProgress(0.0)
 	interaction_cancelled.emit()
-	print("Cancelling interaction with: ", get_parent().name)
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		is_player_nearby = true
-		print("Player entered interaction area for: ", get_parent().name)
 		# Show the prompt immediately when player enters area
 		if hud:
-			hud.show_interaction_progress(interaction_prompt)
+			hud.showInteractionProgress(interaction_prompt)
 
 func _on_body_exited(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		is_player_nearby = false
-		print("Player exited interaction area for: ", get_parent().name)
 		if is_interacting:
 			cancel_interaction()
 		else:
 			# Hide the prompt when player leaves area
 			if hud:
-				hud.hide_interaction_progress()
+				hud.hideInteractionProgress()

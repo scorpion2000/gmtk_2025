@@ -1,180 +1,153 @@
 extends Control
 class_name GameHUD
 
-# Public variables (accessible by other classes)
-var LoopCount: int = 0
-var MaxSanity: float = 100.0
-var MaxHunger: float = 100.0
-
-# Private variables (internal use only)
-var current_sanity: float = 100.0
-var current_hunger: float = 100.0
-var bar_width: float = 200.0
-
-# Node references
-@onready var loop_counter_label: Label = $TopLeftContainer/LoopCounter
-@onready var sanity_bar_fill: ColorRect = $TopLeftContainer/SanityBarContainer/SanityBarBackground/SanityBarFill
-@onready var hunger_bar_fill: ColorRect = $TopLeftContainer/HungerBarContainer/HungerBarBackground/HungerBarFill
-@onready var mini_map: MiniMap = $MiniMap
-@onready var interaction_container: Control = $InteractionContainer
-@onready var circular_progress_bar: Control = $InteractionContainer/CircularProgressBar
-@onready var progress_fill: ColorRect = $InteractionContainer/CircularProgressBar/ProgressFill
-@onready var hold_e_label: Label = $InteractionContainer/HoldELabel
-@onready var interaction_label: Label = $InteractionContainer/InteractionLabel
+# Node references (cached on ready)
+@onready var LoopCounterLabel: Label = %LoopCounter
+@onready var SanityBarFill: ColorRect = $TopLeftContainer/SanityBarContainer/SanityBarBackground/SanityBarFill
+@onready var HungerBarFill: ColorRect = $TopLeftContainer/HungerBarContainer/HungerBarBackground/HungerBarFill
+@onready var miniMap: MiniMap = $MiniMap
+@onready var InteractionContainer: Control = $InteractionContainer
+@onready var CircularProgressBar: Control = $InteractionContainer/CircularProgressBar
+@onready var ProgressFill: ColorRect = $InteractionContainer/CircularProgressBar/ProgressFill
+@onready var HoldELabel: Label = $InteractionContainer/HoldELabel
+@onready var interactionLabel: Label = $InteractionContainer/InteractionLabel
 
 # Buff icon references
-@onready var buff_icons_container: VBoxContainer = $BuffIconsContainer
-@onready var speed_icon: ColorRect = $BuffIconsContainer/SpeedIcon
-@onready var noise_icon: ColorRect = $BuffIconsContainer/NoiseIcon
-@onready var loop_icon: ColorRect = $BuffIconsContainer/LoopIcon
+@onready var BuffIconsContainer: VBoxContainer = $BuffIconsContainer
+@onready var speedIcon: ColorRect = $BuffIconsContainer/SpeedIcon
+@onready var noiseIcon: ColorRect = $BuffIconsContainer/NoiseIcon
+@onready var loopIcon: ColorRect = $BuffIconsContainer/LoopIcon
 
-# Signals for when bars reach critical levels
+# Signals for notifying game logic when thresholds are crossed
 signal SanityDepleted
 signal HungerDepleted
-signal SanityCritical(current_value: float)
-signal HungerCritical(current_value: float)
+signal SanityCritical(currentvalue: float)
+signal HungerCritical(currentValue: float)
+
+# Reference to the StatsList containing hunger and sanity stats.
+var statSanity : Stat
+var statHunger : Stat
 
 func _ready() -> void:
-	# Add to hud group for easy access
 	add_to_group("hud")
+	# Defer initial bar updates until all nodes are ready
+	call_deferred("initialSetup")
+
+# During initial setup, query the stats (if available)
+func initialSetup() -> void:
+	var player := get_tree().get_first_node_in_group("player") as Player
+	var StatsListRef := player.Stats
+	if !StatsListRef: return
 	
-	# Force initial update after nodes are ready
-	call_deferred("initial_setup")
+	statSanity = StatsListRef.getStatRef("sanity")
+	statHunger = StatsListRef.getStatRef("hunger")
+	if statSanity:
+		if !statSanity.statChanged.is_connected(onSanityUpdated):
+			statSanity.statChanged.connect(onSanityUpdated)
+		updateSanityBar()
+		checkSanityThresholds()
+	if statHunger:
+		if !statHunger.statChanged.is_connected(onHungerUpdated):
+			statHunger.statChanged.connect(onHungerUpdated)
+		updateHungerBar()
+		checkHungerThresholds()
 
-func initial_setup() -> void:
-	update_loop_display()
-	update_sanity_bar()
-	update_hunger_bar()
-	print("HUD initialized - Sanity: ", GetSanityPercentage() * 100, "%, Hunger: ", GetHungerPercentage() * 100, "%")
+# --- Public API ---
+func updateLoopDisplay(newValue: int) -> void:
+	if !LoopCounterLabel: return
+	LoopCounterLabel.text = "Loops: " + str(newValue)
 
-# Public methods - accessible by other classes
-func AddLoops(amount: int) -> void:
-	LoopCount += amount
-	UpdateLoopDisplay()
+# Initialize the mini‑map with level data
+func initializeMinimap(levelGenerator: LevelGenerator) -> void:
+	if !miniMap: return
+	miniMap.initialize(levelGenerator)
 
-func SetSanity(value: float) -> void:
-	current_sanity = clampf(value, 0.0, MaxSanity)
-	update_sanity_bar()
-	check_sanity_thresholds()
+func updateMinimapRoom(room: RoomData) -> void:
+	if !miniMap: return
+	miniMap.update_current_room(room)
 
-func SetHunger(value: float) -> void:
-	current_hunger = clampf(value, 0.0, MaxHunger)
-	update_hunger_bar()
-	check_hunger_thresholds()
+# Display the interaction progress container with prompt text
+func showInteractionProgress(promptText: String = "Search") -> void:
+	if InteractionContainer and interactionLabel and HoldELabel:
+		interactionLabel.text = promptText
+		HoldELabel.text = "Hold E"
+		InteractionContainer.visible = true
+		if ProgressFill:
+			ProgressFill.anchor_right = 0.0
 
-func GetSanity() -> float:
-	return current_sanity
+func hideInteractionProgress() -> void:
+	if !InteractionContainer: return
+	InteractionContainer.visible = false
 
-func GetHunger() -> float:
-	return current_hunger
+func updateInteractionProgress(progress: float) -> void:
+	if !ProgressFill: return
+	ProgressFill.anchor_right = clampf(progress, 0.0, 1.0)
 
-func GetSanityPercentage() -> float:
-	return current_sanity / MaxSanity
+# --- Internal methods ---
+func updateSanityBar() -> void:
+	if !SanityBarFill: return
+	var percentage: float = statSanity.getPercentage()
+	SanityBarFill.anchor_right = percentage
+	# Colour the bar based on percentage
+	if percentage > 0.5:
+		SanityBarFill.color = Color(0.3, 0.7, 1.0)    # Blue – healthy
+	elif percentage > 0.25:
+		SanityBarFill.color = Color(1.0, 0.8, 0.2)    # Yellow – warning
+	else:
+		SanityBarFill.color = Color(1.0, 0.2, 0.2)    # Red – critical
 
-func GetHungerPercentage() -> float:
-	return current_hunger / MaxHunger
+func updateHungerBar() -> void:
+	if !HungerBarFill: return
+	var percentage: float = statHunger.getPercentage()
+	HungerBarFill.anchor_right = percentage
+	if percentage > 0.5:
+		HungerBarFill.color = Color(1.0, 0.5, 0.2)    # Orange – satisfied
+	elif percentage > 0.25:
+		HungerBarFill.color = Color(1.0, 0.8, 0.2)    # Yellow – getting hungry
+	else:
+		HungerBarFill.color = Color(1.0, 0.2, 0.2)    # Red – starving
 
-func UpdateLoopDisplay() -> void:
-	update_loop_display()
-
-# Private methods - internal functionality
-func update_loop_display() -> void:
-	if loop_counter_label:
-		loop_counter_label.text = "Loops: " + str(LoopCount)
-
-func update_sanity_bar() -> void:
-	if sanity_bar_fill:
-		var percentage = GetSanityPercentage()
-		# Use anchor_right to scale the bar as a percentage of its parent
-		sanity_bar_fill.anchor_right = percentage
-		
-		# Change color based on sanity level
-		if percentage > 0.5:
-			sanity_bar_fill.color = Color(0.3, 0.7, 1.0)  # Blue - healthy
-		elif percentage > 0.25:
-			sanity_bar_fill.color = Color(1.0, 0.8, 0.2)  # Yellow - warning
-		else:
-			sanity_bar_fill.color = Color(1.0, 0.2, 0.2)  # Red - critical
-
-func update_hunger_bar() -> void:
-	if hunger_bar_fill:
-		var percentage = GetHungerPercentage()
-		# Use anchor_right to scale the bar as a percentage of its parent
-		hunger_bar_fill.anchor_right = percentage
-		
-		# Change color based on hunger level
-		if percentage > 0.5:
-			hunger_bar_fill.color = Color(1.0, 0.5, 0.2)  # Orange - satisfied
-		elif percentage > 0.25:
-			hunger_bar_fill.color = Color(1.0, 0.8, 0.2)  # Yellow - getting hungry
-		else:
-			hunger_bar_fill.color = Color(1.0, 0.2, 0.2)  # Red - starving
-
-func check_sanity_thresholds() -> void:
-	if current_sanity <= 0.0:
+func checkSanityThresholds() -> void:
+	if statSanity.getValue() <= statSanity.getMinValue():
 		SanityDepleted.emit()
-	elif current_sanity <= MaxSanity * 0.25:
-		SanityCritical.emit(current_sanity)
+	elif statSanity.getPercentage() <= 0.25:
+		SanityCritical.emit(statSanity.getValue())
 
-func check_hunger_thresholds() -> void:
-	if current_hunger <= 0.0:
+func checkHungerThresholds() -> void:
+	if statHunger.getValue() <= statHunger.getMinValue():
 		HungerDepleted.emit()
-	elif current_hunger <= MaxHunger * 0.25:
-		HungerCritical.emit(current_hunger)
+	elif statHunger.getPercentage() <= 0.25:
+		HungerCritical.emit(statHunger.getValue())
 
-# Mini-map management functions
-func initialize_minimap(level_generator: LevelGenerator) -> void:
-	if mini_map:
-		mini_map.initialize(level_generator)
+func onSanityUpdated(_statName : String, _newValue: float):
+	updateSanityBar()
+	checkSanityThresholds()
 
-func update_minimap_room(room: RoomData) -> void:
-	if mini_map:
-		mini_map.update_current_room(room)
-
-# Interaction progress bar functions
-func show_interaction_progress(prompt_text: String = "Search") -> void:
-	if interaction_container and interaction_label and hold_e_label:
-		interaction_label.text = prompt_text
-		hold_e_label.text = "Hold E"
-		interaction_container.visible = true
-		if progress_fill:
-			progress_fill.anchor_right = 0.0
-
-func hide_interaction_progress() -> void:
-	if interaction_container:
-		interaction_container.visible = false
-
-func update_interaction_progress(progress: float) -> void:
-	if progress_fill:
-		progress_fill.anchor_right = clampf(progress, 0.0, 1.0)
+func onHungerUpdated(_statName : String, _newValue: float):
+	updateHungerBar()
+	checkHungerThresholds()
 
 # Buff icon management functions
-func show_speed_buff() -> void:
-	if speed_icon:
-		speed_icon.visible = true
-		print("HUD: Showing speed buff icon")
+func showSpeedBuff() -> void:
+	if !speedIcon: return
+	speedIcon.visible = true
 
-func hide_speed_buff() -> void:
-	if speed_icon:
-		speed_icon.visible = false
-		print("HUD: Hiding speed buff icon")
+func hideSpeedBuff() -> void:
+	if !speedIcon: return
+	speedIcon.visible = false
 
-func show_noise_buff() -> void:
-	if noise_icon:
-		noise_icon.visible = true
-		print("HUD: Showing noise buff icon")
+func showNoiseBuff() -> void:
+	if !noiseIcon: return
+	noiseIcon.visible = true
 
-func hide_noise_buff() -> void:
-	if noise_icon:
-		noise_icon.visible = false
-		print("HUD: Hiding noise buff icon")
+func hideNoiseBuff() -> void:
+	if !noiseIcon: return
+	noiseIcon.visible = false
 
-func show_loop_buff() -> void:
-	if loop_icon:
-		loop_icon.visible = true
-		print("HUD: Showing loop buff icon")
+func showLoopBuff() -> void:
+	if !loopIcon: return
+	loopIcon.visible = true
 
-func hide_loop_buff() -> void:
-	if loop_icon:
-		loop_icon.visible = false
-		print("HUD: Hiding loop buff icon")
+func hideLoopBuff() -> void:
+	if !loopIcon: return
+	loopIcon.visible = false

@@ -41,9 +41,9 @@ func _process(delta):
 
 func initialize_rooms(player_node: Node2D):
 	player = player_node
-	var rooms = level_generator.generate_level()
-	print("Generated ", rooms.size(), " rooms")
-	
+	#var rooms = level_generator.generate_level()
+	#print("Generated ", rooms.size(), " rooms")
+	level_generator.generate_level()
 	var starting_room = level_generator.get_starting_room()
 	if starting_room:
 		_load_room(starting_room)
@@ -55,7 +55,7 @@ func _load_room(room_data: RoomData):
 	is_transitioning = true
 	current_room = room_data
 	current_room.is_visited = true
-	print("Visiting room: ", RoomData.RoomType.keys()[room_data.room_type], " at (", room_data.grid_x, ",", room_data.grid_y, ")")
+	#print("Visiting room: ", RoomData.RoomType.keys()[room_data.room_type], " at (", room_data.grid_x, ",", room_data.grid_y, ")")
 	
 	if not loaded_room_scenes.has(room_data):
 		_load_room_scene(room_data)
@@ -110,7 +110,7 @@ func _finish_room_transition():
 	room_changed.emit(current_room)
 	
 	is_transitioning = false
-	print("Room loading complete. Visited rooms: ", _count_visited_rooms())
+	#print("Room loading complete. Visited rooms: ", _count_visited_rooms())
 
 func _count_visited_rooms() -> int:
 	var count = 0

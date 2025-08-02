@@ -17,39 +17,36 @@ size = Vector2(64, 64)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2"]
 size = Vector2(80, 80)
 
-[node name="Test" type="Node2D"]
-script = ExtResource("1_iyx0m")
+[node name="GameManager" type="Node2D" node_paths=PackedStringArray("HudReference", "UiManager")]
+script = ExtResource("1_0tnpc")
+HudReference = NodePath("CanvasLayer/GameHUD")
+UiManager = NodePath("UIManager")
 
-[node name="Player" parent="." instance=ExtResource("1_37kl0")]
+[node name="Player" parent="." instance=ExtResource("2_vtaks")]
 
 [node name="RoomManager" type="Node" parent="."]
-script = ExtResource("4_d8r7f")
+script = ExtResource("3_kvpfn")
 
 [node name="RoomContainer" type="Node" parent="RoomManager"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="GameHUD" parent="CanvasLayer" instance=ExtResource("2_bl13t")]
+[node name="GameHUD" parent="CanvasLayer" instance=ExtResource("4_dinhu")]
 
-[node name="EndScreen" parent="CanvasLayer" instance=ExtResource("5_jcd4p")]
+[node name="EndScreen" parent="CanvasLayer" instance=ExtResource("5_kvuet")]
 process_mode = 3
 visible = false
 
-[node name="UpgradeMenu" parent="CanvasLayer" instance=ExtResource("7_jcd4p")]
+[node name="UpgradeMenu" parent="CanvasLayer" instance=ExtResource("6_trtic")]
 process_mode = 3
 visible = false
-
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("HudReference", "uiManager")]
-script = ExtResource("5_j5jx5")
-HudReference = NodePath("../CanvasLayer/GameHUD")
-uiManager = NodePath("../UIManager")
 
 [node name="UIManager" type="Node" parent="." node_paths=PackedStringArray("hud", "endScreen", "upgradeMenu")]
-script = ExtResource("9_uacia")
+script = ExtResource("7_ir15t")
 hud = NodePath("../CanvasLayer/GameHUD")
 endScreen = NodePath("../CanvasLayer/EndScreen")
 upgradeMenu = NodePath("../CanvasLayer/UpgradeMenu")
-mainMenuScene = ExtResource("9_yk7ts")
+mainMenuScene = ExtResource("8_ca42v")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0.7, 0.7, 0.8, 1)

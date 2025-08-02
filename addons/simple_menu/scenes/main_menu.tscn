@@ -101,7 +101,7 @@ offset_right = -0.256012
 offset_bottom = -0.224007
 LoopsTexture = SubResource("PlaceholderTexture2D_rt5ha")
 
-[node name="Settings" parent="UI" node_paths=PackedStringArray("pre_scene") instance=ExtResource("3_dt7l5")]
+[node name="Settings" parent="UI" node_paths=PackedStringArray("pre_scene") groups=["Settings"] instance=ExtResource("3_dt7l5")]
 visible = false
 pre_scene = NodePath("../MainMenu")
 

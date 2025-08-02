@@ -57,9 +57,8 @@ func update_interaction_prompt() -> void:
 
 func find_game_manager() -> void:
 	# Look for GameManager in the scene tree
-	var gm_node = get_tree().get_first_node_in_group("game_manager")
-	if gm_node:
-		game_manager = gm_node as GameManager
+	game_manager = get_tree().get_first_node_in_group("GameManager") as GameManager
+	if game_manager:
 		print("Altar found GameManager: ", game_manager)
 	else:
 		# Fallback: search by type
@@ -81,31 +80,31 @@ func _on_altar_used() -> void:
 	# Check current run loops via HUD, not global bank
 	var current_run_loops = 0
 	if hud:
-		current_run_loops = hud.LoopCount
+		current_run_loops = game_manager.LoopCount
 	
 	# Check if player has enough loops in current run
 	if current_run_loops < current_cost:
 		print("Not enough loops! Need ", current_cost, " but have ", current_run_loops, " (current run)")
 		if hud:
 			# Show feedback - reusing the interaction label for feedback
-			hud.show_interaction_progress("Not enough loops!")
+			hud.showInteractionProgress("Not enough loops!")
 			await get_tree().create_timer(2.0).timeout
-			hud.hide_interaction_progress()
+			hud.hideInteractionProgress()
 		return
 	
 	# Check if all buffs are already active
 	if active_buffs.size() >= 3:
 		print("All buffs already active!")
 		if hud:
-			hud.show_interaction_progress("All buffs active!")
+			hud.showInteractionProgress("All buffs active!")
 			await get_tree().create_timer(2.0).timeout
-			hud.hide_interaction_progress()
+			hud.hideInteractionProgress()
 		return
 	
 	# Spend the loops from current run
-	if hud:
-		hud.LoopCount -= current_cost
-		hud.UpdateLoopDisplay()
+	if game_manager:
+		game_manager.LoopCount -= current_cost
+	
 	print("Spent ", current_cost, " loops from current run at altar!")
 	
 	# Increment usage count
@@ -154,9 +153,9 @@ func apply_buff(buff_type: BuffType) -> void:
 	
 	# Show feedback to player
 	if hud:
-		hud.show_interaction_progress(buff_name + " Active!")
+		hud.showInteractionProgress(buff_name + " Active!")
 		await get_tree().create_timer(2.0).timeout
-		hud.hide_interaction_progress()
+		hud.hideInteractionProgress()
 	
 	# Track the buff
 	active_buffs.append(buff_type)
@@ -187,39 +186,39 @@ func apply_speed_buff() -> void:
 	
 	# Show speed icon on HUD
 	if hud:
-		hud.show_speed_buff()
+		hud.showSpeedBuff()
 
 func apply_noise_buff() -> void:
 	# Find all NoiseMaker instances and reduce their noise level
 	# This is more complex - we'll need to modify the NoiseMaker system
 	# For now, we'll add this to the GameManager for global tracking
 	if game_manager:
-		if game_manager.has_method("apply_noise_reduction"):
-			game_manager.apply_noise_reduction(0.9)  # -10% noise
+		if game_manager.has_method("applyNoiseReduction"):
+			game_manager.applyNoiseReduction(0.9)  # -10% noise
 		else:
 			# Add the buff tracking to GameManager
-			game_manager.set("noise_reduction_active", true)
+			game_manager.noiseReductionActive = true
 		print("Applied -10% noise reduction")
 	
 	# Show noise icon on HUD
 	if hud:
-		hud.show_noise_buff()
+		hud.showNoiseBuff()
 
 func apply_loop_buff() -> void:
 	# Modify all SearchableObject instances to have better rewards
 	# This will affect new searches during the buff duration
 	if game_manager:
-		if game_manager.has_method("apply_loop_boost"):
-			game_manager.apply_loop_boost(2.0, 2.0)  # +100% chance and amount
+		if game_manager.has_method("applyLoopBoost"):
+			game_manager.applyLoopBoost(2.0, 2.0)  # +100% chance and amount
 		else:
 			# Add the buff tracking to GameManager
-			game_manager.set("loop_boost_active", true)
-			game_manager.set("loop_boost_multiplier", 2.0)
+			game_manager.loopBoostActive = true
+			game_manager.loopBoostMultiplier = 2.0
 		print("Applied +100% loop boost")
 	
 	# Show loop icon on HUD
 	if hud:
-		hud.show_loop_buff()
+		hud.showLoopBuff()
 
 func _on_buff_expired(buff_type: BuffType, timer: Timer) -> void:
 	print("Buff expired: ", BuffType.keys()[buff_type])
@@ -261,29 +260,29 @@ func remove_speed_buff() -> void:
 	
 	# Hide speed icon on HUD
 	if hud:
-		hud.hide_speed_buff()
+		hud.hideSpeedBuff()
 
 func remove_noise_buff() -> void:
 	if game_manager:
-		if game_manager.has_method("remove_noise_reduction"):
-			game_manager.remove_noise_reduction()
+		if game_manager.has_method("removeNoiseReduction"):
+			game_manager.removeNoiseReduction()
 		else:
-			game_manager.set("noise_reduction_active", false)
+			game_manager.noiseReductionActive = false
 		print("Removed noise reduction")
 	
 	# Hide noise icon on HUD
 	if hud:
-		hud.hide_noise_buff()
+		hud.hideNoiseBuff()
 
 func remove_loop_buff() -> void:
 	if game_manager:
-		if game_manager.has_method("remove_loop_boost"):
-			game_manager.remove_loop_boost()
+		if game_manager.has_method("removeLoopBoost"):
+			game_manager.removeLoopBoost()
 		else:
-			game_manager.set("loop_boost_active", false)
-			game_manager.set("loop_boost_multiplier", 1.0)
+			game_manager.loopBoostActive = false
+			game_manager.loopBoostMultiplier = 1.0
 		print("Removed loop boost")
 	
 	# Hide loop icon on HUD
 	if hud:
-		hud.hide_loop_buff()
+		hud.hideLoopBuff()
