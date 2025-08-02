@@ -42,17 +42,6 @@ func loadButtons():
 		if upgrade_data.has(key):
 			var saved: Dictionary = upgrade_data[key]
 			var target_level := int(saved.get("level", 0))
-			btn.level = 0
-			btn.statCost = btn.getCurrentCost()
 			btn.UpgradeStat.setValue(btn.UpgradeStat.currentValue)
 			for i in range(target_level):
-				var inc := btn.getCurrentIncrease()
-				match saved.get("modifier_type", btn.modType.Flat):
-					btn.modType.Flat:
-						btn.UpgradeStat.addValue(inc)
-					btn.modType.Percent:
-						var mod := StatModifier.MultiplyValueModifier.new()
-						mod.factor = 1.0 + inc
-						btn.UpgradeStat.addModifier(mod)
-				btn.level += 1
-				btn.statCost = btn.getCurrentCost()
+				btn.upgradeButton()
