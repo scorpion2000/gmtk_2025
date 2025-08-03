@@ -5,7 +5,15 @@
 [ext_resource type="Resource" uid="uid://xh8rwgnrd7ac" path="res://scripts/StatsSystem/Stats/persistent_stats.tres" id="2_0ujhq"]
 [ext_resource type="PackedScene" uid="uid://bvppkedek6cnn" path="res://scenes/UI/LoopCounter/loop_counter.tscn" id="3_lkyoy"]
 [ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="5_gj6m4"]
-[ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/IndividualStats/stat_speed.tres" id="5_lkyoy"]
+
+[sub_resource type="Resource" id="Resource_ur2w5"]
+resource_local_to_scene = true
+resource_name = "Speed"
+script = ExtResource("5_gj6m4")
+currentValue = 100.0
+minValue = 0.0
+maxValue = 180.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
 
 [sub_resource type="Resource" id="Resource_lkyoy"]
 resource_local_to_scene = true
@@ -86,7 +94,7 @@ size_flags_vertical = 3
 [node name="Speed" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
 layout_mode = 2
 size_flags_vertical = 3
-UpgradeStat = ExtResource("5_lkyoy")
+UpgradeStat = SubResource("Resource_ur2w5")
 upgradeName = "Movement Speed"
 
 [node name="Sanity" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]

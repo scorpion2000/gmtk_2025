@@ -115,19 +115,19 @@ func _play_side(base: String, dx: float) -> void:
 
 func _play_updown(base: String, orient: String) -> void:
 	var frames: SpriteFrames = animationPlayer.sprite_frames
-	var name: String = ""
+	var newName: String = ""
 	if frames.has_animation(base + orient):
-		name = base + orient
+		newName = base + orient
 	elif frames.has_animation(base):
-		name = base
+		newName = base
 	else:
 		# Try a sensible other direction as last resort
 		if orient == "up" and frames.has_animation(base + "down"):
-			name = base + "down"
+			newName = base + "down"
 		elif orient == "down" and frames.has_animation(base + "up"):
-			name = base + "up"
+			newName = base + "up"
 		else:
-			name = base
+			newName = base
 	animationPlayer.flip_h = false
-	if animationPlayer.animation != name:
-		animationPlayer.play(name)
+	if animationPlayer.animation != newName:
+		animationPlayer.play(newName)

@@ -39,12 +39,11 @@ func initialSetup() -> void:
 			statSanity.statChanged.connect(onSanityUpdated)
 		updateSanityBar()
 		checkSanityThresholds()
-		print("found sanity")
 
 # --- Public API ---
 func updateLoopDisplay(newValue: int) -> void:
 	if !LoopCounterLabel: return
-	LoopCounterLabel.text = "Loops: " + str(newValue)
+	LoopCounterLabel.text = str(newValue)
 
 # Initialize the mini‑map with level data
 func initializeMinimap(levelGenerator: LevelGenerator) -> void:

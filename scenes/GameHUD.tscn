@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvk8x7p2qm1n8"]
+[gd_scene load_steps=7 format=3 uid="uid://bvk8x7p2qm1n8"]
 
 [ext_resource type="Script" uid="uid://iost784vxrh3" path="res://scripts/UI/GameHUD.gd" id="1_hud_script"]
 [ext_resource type="Script" uid="uid://5gpr4b2pqkfu" path="res://scripts/UI/MiniMap.gd" id="2_minimap_script"]
+[ext_resource type="Texture2D" uid="uid://d0cylv83g8w50" path="res://assets/Art/Image/fruit_loops.png" id="2_n4q7i"]
 [ext_resource type="Shader" path="res://scenes/GameHUD.gdshader" id="3_kej77"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1"]
@@ -31,10 +32,18 @@ offset_top = -93.0
 offset_right = 296.0
 offset_bottom = -18.0
 
-[node name="LoopCounter" type="Label" parent="TopLeftContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopLeftContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="TopLeftContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_n4q7i")
+expand_mode = 2
+
+[node name="LoopCounter" type="Label" parent="TopLeftContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Loops: 0"
+text = " 0"
 label_settings = SubResource("LabelSettings_1")
 
 [node name="SanityBarContainer" type="VBoxContainer" parent="TopLeftContainer"]

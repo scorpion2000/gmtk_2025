@@ -1,9 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bvppkedek6cnn"]
 
 [ext_resource type="Script" uid="uid://c4e4vgjf10plv" path="res://scripts/UI/LoopCounter/loop_counter.gd" id="1_3no4h"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ndy32"]
-size = Vector2(30, 30)
+[ext_resource type="Texture2D" uid="uid://d0cylv83g8w50" path="res://assets/Art/Image/fruit_loops.png" id="2_aks8b"]
 
 [node name="LoopCounter" type="HBoxContainer"]
 anchors_preset = 15
@@ -16,8 +14,8 @@ script = ExtResource("1_3no4h")
 [node name="CurrencyImage" type="TextureRect" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 10
-texture = SubResource("PlaceholderTexture2D_ndy32")
+size_flags_horizontal = 6
+texture = ExtResource("2_aks8b")
 expand_mode = 3
 stretch_mode = 4
 

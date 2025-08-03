@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://b4xmjbxcv8xp0"]
+[gd_scene load_steps=19 format=4 uid="uid://b4xmjbxcv8xp0"]
 
 [ext_resource type="Texture2D" uid="uid://csr2ga5wwo830" path="res://assets/Art/tilemaps/Room_Builder_16x16.png" id="1_srusa"]
 [ext_resource type="Texture2D" uid="uid://d2xojc58h0kfo" path="res://assets/Art/tilemaps/4_Bedroom_16x16.png" id="2_ngwsf"]
@@ -6063,6 +6063,7 @@ tile_map_data = PackedByteArray("AAD6//v/AgAGAA8AAAD6//z/AgAGABAAAAD6//3/AgAGABE
 tile_set = SubResource("TileSet_bxm2g")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_uslqx")
 
 [node name="EnemySpawner" type="Node" parent="." node_paths=PackedStringArray("spawnArea")]
