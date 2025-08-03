@@ -2,8 +2,8 @@ class_name Player
 extends EntityBase
 
 @export var Stats : StatsList
-@export var walk_speed: float = 100.0
-@export var sprint_speed: float = 180.0
+var walk_speed: float = 100.0
+var sprint_speed: float = 180.0
 @export var acceleration: float = 12.0
 @export var friction: float = 15.0
 
