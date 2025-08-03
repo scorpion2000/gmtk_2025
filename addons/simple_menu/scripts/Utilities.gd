@@ -70,9 +70,7 @@ func load_video_settings():
 
 # Scene manager
 func switch_scene(scene_name: StringName, curScene : Node):
-	if not scenes.has(scene_name):
-		print("ERROR: Scene '", scene_name, "' not found in scene_map")
-		return
+	if not scenes.has(scene_name): return
 	lastScenePressed = scene_name
 	var current = get_tree().current_scene
 	if current != null and !current.scene_file_path.is_empty():

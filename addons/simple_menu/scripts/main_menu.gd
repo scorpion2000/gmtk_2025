@@ -5,7 +5,6 @@ extends Control
 var gameScene := "res://scenes/game.tscn"
 
 func _ready():
-	print(ProjectSettings.globalize_path("user://settings.cfg"))
 	$VBoxContainer/Start.grab_focus()
 	if option_menu:
 		option_menu.pre_scene = self

@@ -1,39 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://de3ufogxp37s8"]
+[gd_scene load_steps=8 format=3 uid="uid://de3ufogxp37s8"]
 
 [ext_resource type="Script" uid="uid://cog8ddhnycnp" path="res://scripts/managers/GameManager.gd" id="1_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://ckgf4x4ssqojg" path="res://scenes/player.tscn" id="2_vtaks"]
 [ext_resource type="Script" uid="uid://djuarkdn61ex2" path="res://scripts/managers/RoomManager.gd" id="3_kvpfn"]
-[ext_resource type="Script" uid="uid://ba21q6eugodl6" path="res://scripts/StatsSystem/stats_list.gd" id="3_kvuet"]
 [ext_resource type="PackedScene" uid="uid://bvk8x7p2qm1n8" path="res://scenes/GameHUD.tscn" id="4_dinhu"]
-[ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="4_trtic"]
-[ext_resource type="Resource" uid="uid://ck3pd1ewlqnqo" path="res://scripts/StatsSystem/Stats/stat_health.tres" id="5_ir15t"]
-[ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/stat_speed.tres" id="6_ca42v"]
 [ext_resource type="Script" uid="uid://dujt5tny6b6xh" path="res://scripts/Interactable.gd" id="9_rysoc"]
-
-[sub_resource type="Resource" id="Resource_rysoc"]
-resource_local_to_scene = true
-resource_name = "Sanity"
-script = ExtResource("4_trtic")
-currentValue = 100.0
-minValue = 0.0
-maxValue = 100.0
-metadata/_custom_type_script = "uid://dx24qqcspn7tv"
-
-[sub_resource type="Resource" id="Resource_ssvqc"]
-resource_local_to_scene = true
-resource_name = "Hunger"
-script = ExtResource("4_trtic")
-currentValue = 100.0
-minValue = 0.0
-maxValue = 100.0
-metadata/_custom_type_script = "uid://dx24qqcspn7tv"
-
-[sub_resource type="Resource" id="Resource_264po"]
-resource_local_to_scene = true
-resource_name = "Persistent Stats"
-script = ExtResource("3_kvuet")
-statsList = Array[ExtResource("4_trtic")]([ExtResource("5_ir15t"), ExtResource("6_ca42v"), SubResource("Resource_rysoc"), SubResource("Resource_ssvqc")])
-metadata/_custom_type_script = "uid://ba21q6eugodl6"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(64, 64)
@@ -46,7 +17,6 @@ script = ExtResource("1_0tnpc")
 HudReference = NodePath("CanvasLayer/GameHUD")
 
 [node name="Player" parent="." instance=ExtResource("2_vtaks")]
-Stats = SubResource("Resource_264po")
 
 [node name="RoomManager" type="Node" parent="."]
 script = ExtResource("3_kvpfn")

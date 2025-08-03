@@ -1,11 +1,56 @@
-[gd_scene load_steps=7 format=3 uid="uid://cf6t2nxd3fq6q"]
+[gd_scene load_steps=12 format=3 uid="uid://cf6t2nxd3fq6q"]
 
 [ext_resource type="Script" uid="uid://gdhqyru6cbm2" path="res://scripts/UI/UpgradeMenu/upgrade_menu.gd" id="1_1tmyn"]
 [ext_resource type="PackedScene" uid="uid://sdfyq58n6lj0" path="res://scenes/UI/UpgradeMenu/upgrade_button.tscn" id="1_8qoat"]
 [ext_resource type="Resource" uid="uid://xh8rwgnrd7ac" path="res://scripts/StatsSystem/Stats/persistent_stats.tres" id="2_0ujhq"]
 [ext_resource type="PackedScene" uid="uid://bvppkedek6cnn" path="res://scenes/UI/LoopCounter/loop_counter.tscn" id="3_lkyoy"]
-[ext_resource type="Resource" uid="uid://ck3pd1ewlqnqo" path="res://scripts/StatsSystem/Stats/stat_health.tres" id="4_ur2w5"]
-[ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/stat_speed.tres" id="5_lkyoy"]
+[ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="5_gj6m4"]
+[ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/IndividualStats/stat_speed.tres" id="5_lkyoy"]
+
+[sub_resource type="Resource" id="Resource_lkyoy"]
+resource_local_to_scene = true
+resource_name = "Sanity"
+script = ExtResource("5_gj6m4")
+currentValue = 100.0
+minValue = 0.0
+maxValue = 100.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
+
+[sub_resource type="Resource" id="Resource_gj6m4"]
+resource_local_to_scene = true
+resource_name = "Hunger"
+script = ExtResource("5_gj6m4")
+currentValue = 100.0
+minValue = 0.0
+maxValue = 100.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
+
+[sub_resource type="Resource" id="Resource_wiuyi"]
+resource_local_to_scene = true
+resource_name = "HungerDrain"
+script = ExtResource("5_gj6m4")
+currentValue = 2.0
+minValue = 0.0
+maxValue = 20.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
+
+[sub_resource type="Resource" id="Resource_dy52k"]
+resource_local_to_scene = true
+resource_name = "SanityDrain"
+script = ExtResource("5_gj6m4")
+currentValue = 2.0
+minValue = 0.0
+maxValue = 100.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
+
+[sub_resource type="Resource" id="Resource_5i55o"]
+resource_local_to_scene = true
+resource_name = "SanityRecovery"
+script = ExtResource("5_gj6m4")
+currentValue = 1.0
+minValue = 0.0
+maxValue = 100.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
 
 [node name="UpgradeMenu" type="Panel"]
 anchors_preset = 15
@@ -27,6 +72,7 @@ grow_vertical = 2
 [node name="HeaderLabel" type="Label" parent="VBox"]
 layout_mode = 2
 size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 30
 text = "Upgrade Shop"
 
 [node name="HSeparator3" type="HSeparator" parent="VBox"]
@@ -45,7 +91,7 @@ layout_mode = 2
 
 [node name="LoopCounter" parent="VBox/Margin/VBoxContainer" instance=ExtResource("3_lkyoy")]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 4
 
 [node name="HSeparator" type="HSeparator" parent="VBox/Margin/VBoxContainer"]
 layout_mode = 2
@@ -55,15 +101,41 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HealthStat" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-UpgradeStat = ExtResource("4_ur2w5")
-
-[node name="SpeedStat" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+[node name="Speed" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
 layout_mode = 2
 size_flags_vertical = 3
 UpgradeStat = ExtResource("5_lkyoy")
+upgradeName = "Movement Speed"
+
+[node name="Sanity" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+UpgradeStat = SubResource("Resource_lkyoy")
+upgradeName = "Max Sanity"
+
+[node name="Hunger" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+UpgradeStat = SubResource("Resource_gj6m4")
+upgradeName = "Max Hunger"
+
+[node name="Hunger Drain" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+UpgradeStat = SubResource("Resource_wiuyi")
+upgradeName = "Hunger Drain Speed"
+
+[node name="Sanity Drain" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+UpgradeStat = SubResource("Resource_dy52k")
+upgradeName = "Sanity Drain Speed"
+
+[node name="Sanity Recovery" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
+layout_mode = 2
+size_flags_vertical = 3
+UpgradeStat = SubResource("Resource_5i55o")
+upgradeName = "Sanity Recovery"
 
 [node name="HSeparator" type="HSeparator" parent="VBox"]
 layout_mode = 2
