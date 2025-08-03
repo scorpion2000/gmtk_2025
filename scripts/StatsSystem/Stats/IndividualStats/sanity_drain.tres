@@ -6,7 +6,7 @@
 resource_local_to_scene = true
 resource_name = "SanityDrain"
 script = ExtResource("1_87m4w")
-currentValue = 2.0
+currentValue = 0.7
 minValue = 0.0
 maxValue = 100.0
 metadata/_custom_type_script = "uid://dx24qqcspn7tv"

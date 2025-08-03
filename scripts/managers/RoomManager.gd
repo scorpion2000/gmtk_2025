@@ -132,10 +132,10 @@ func _load_room_scene(room_data: RoomData):
 	else:
 		room_scene_node = _create_placeholder_room(room_data)
 		room_container.add_child(room_scene_node)
-
+	
 	var room_offset = Vector2(
-		room_data.grid_x * 280,  # Rooms are 242x242, so 280 spacing (38px gap)
-		room_data.grid_y * 280   # Square spacing for square rooms
+		room_data.grid_x * 243,  # Rooms are 242x242, so 280 spacing (38px gap)
+		room_data.grid_y * 243   # Square spacing for square rooms
 	)
 	room_scene_node.position = room_offset
 	

@@ -1,10 +1,31 @@
-[gd_scene load_steps=7 format=4 uid="uid://cq2v8y4jmkfyp"]
+[gd_scene load_steps=14 format=4 uid="uid://cq2v8y4jmkfyp"]
 
 [ext_resource type="Texture2D" uid="uid://csr2ga5wwo830" path="res://assets/Art/tilemaps/Room_Builder_16x16.png" id="1_5xx1k"]
 [ext_resource type="Texture2D" uid="uid://d2xojc58h0kfo" path="res://assets/Art/tilemaps/4_Bedroom_16x16.png" id="2_psop8"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(60, 60)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5xx1k"]
+size = Vector2(236, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o54ug"]
+size = Vector2(236, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_losq1"]
+size = Vector2(7, 245)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mv5we"]
+size = Vector2(7, 245)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u8b35"]
+size = Vector2(34, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u3nwj"]
+size = Vector2(19, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3qk03"]
+size = Vector2(32, 17)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mim3r"]
+size = Vector2(16, 32)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o54ug"]
 texture = ExtResource("1_5xx1k")
@@ -5261,20 +5282,20 @@ color = Color(0.2, 0.4, 0.2, 1)
 [node name="Walls" type="StaticBody2D" parent="."]
 
 [node name="TopWall" type="CollisionShape2D" parent="Walls"]
-position = Vector2(0, -131)
-shape = SubResource("RectangleShape2D_1")
+position = Vector2(-1, -124.5)
+shape = SubResource("RectangleShape2D_5xx1k")
 
 [node name="BottomWall" type="CollisionShape2D" parent="Walls"]
-position = Vector2(0, 131)
-shape = SubResource("RectangleShape2D_1")
+position = Vector2(0, 115)
+shape = SubResource("RectangleShape2D_o54ug")
 
 [node name="LeftWall" type="CollisionShape2D" parent="Walls"]
-position = Vector2(-131, 0)
-shape = SubResource("RectangleShape2D_1")
+position = Vector2(-115.5, -4.5)
+shape = SubResource("RectangleShape2D_losq1")
 
 [node name="RightWall" type="CollisionShape2D" parent="Walls"]
-position = Vector2(131, 0)
-shape = SubResource("RectangleShape2D_1")
+position = Vector2(115.5, -4.5)
+shape = SubResource("RectangleShape2D_mv5we")
 
 [node name="Doors" type="Node2D" parent="."]
 
@@ -5282,53 +5303,29 @@ shape = SubResource("RectangleShape2D_1")
 position = Vector2(0, -121)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Doors/NorthDoor"]
-shape = SubResource("RectangleShape2D_1")
-
-[node name="Visual" type="ColorRect" parent="Doors/NorthDoor"]
-offset_left = -30.0
-offset_top = -30.0
-offset_right = 30.0
-offset_bottom = 30.0
-color = Color(0, 1, 0, 1)
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_u8b35")
 
 [node name="EastDoor" type="Area2D" parent="Doors"]
 position = Vector2(121, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Doors/EastDoor"]
-shape = SubResource("RectangleShape2D_1")
-
-[node name="Visual" type="ColorRect" parent="Doors/EastDoor"]
-offset_left = -30.0
-offset_top = -30.0
-offset_right = 30.0
-offset_bottom = 30.0
-color = Color(0, 1, 0, 1)
+position = Vector2(-4.5, 0)
+shape = SubResource("RectangleShape2D_u3nwj")
 
 [node name="SouthDoor" type="Area2D" parent="Doors"]
 position = Vector2(0, 121)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Doors/SouthDoor"]
-shape = SubResource("RectangleShape2D_1")
-
-[node name="Visual" type="ColorRect" parent="Doors/SouthDoor"]
-offset_left = -30.0
-offset_top = -30.0
-offset_right = 30.0
-offset_bottom = 30.0
-color = Color(0, 1, 0, 1)
+position = Vector2(0, -3.5)
+shape = SubResource("RectangleShape2D_3qk03")
 
 [node name="WestDoor" type="Area2D" parent="Doors"]
 position = Vector2(-121, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Doors/WestDoor"]
-shape = SubResource("RectangleShape2D_1")
-
-[node name="Visual" type="ColorRect" parent="Doors/WestDoor"]
-offset_left = -30.0
-offset_top = -30.0
-offset_right = 30.0
-offset_bottom = 30.0
-color = Color(0, 1, 0, 1)
+position = Vector2(4, 0)
+shape = SubResource("RectangleShape2D_mim3r")
 
 [node name="PlayerSpawn" type="Marker2D" parent="."]
 

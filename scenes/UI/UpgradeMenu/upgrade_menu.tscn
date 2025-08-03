@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cf6t2nxd3fq6q"]
+[gd_scene load_steps=10 format=3 uid="uid://cf6t2nxd3fq6q"]
 
 [ext_resource type="Script" uid="uid://gdhqyru6cbm2" path="res://scripts/UI/UpgradeMenu/upgrade_menu.gd" id="1_1tmyn"]
 [ext_resource type="PackedScene" uid="uid://sdfyq58n6lj0" path="res://scenes/UI/UpgradeMenu/upgrade_button.tscn" id="1_8qoat"]
@@ -18,24 +18,6 @@ metadata/_custom_type_script = "uid://dx24qqcspn7tv"
 
 [sub_resource type="Resource" id="Resource_gj6m4"]
 resource_local_to_scene = true
-resource_name = "Hunger"
-script = ExtResource("5_gj6m4")
-currentValue = 100.0
-minValue = 0.0
-maxValue = 100.0
-metadata/_custom_type_script = "uid://dx24qqcspn7tv"
-
-[sub_resource type="Resource" id="Resource_wiuyi"]
-resource_local_to_scene = true
-resource_name = "HungerDrain"
-script = ExtResource("5_gj6m4")
-currentValue = 2.0
-minValue = 0.0
-maxValue = 20.0
-metadata/_custom_type_script = "uid://dx24qqcspn7tv"
-
-[sub_resource type="Resource" id="Resource_dy52k"]
-resource_local_to_scene = true
 resource_name = "SanityDrain"
 script = ExtResource("5_gj6m4")
 currentValue = 2.0
@@ -43,7 +25,7 @@ minValue = 0.0
 maxValue = 100.0
 metadata/_custom_type_script = "uid://dx24qqcspn7tv"
 
-[sub_resource type="Resource" id="Resource_5i55o"]
+[sub_resource type="Resource" id="Resource_wiuyi"]
 resource_local_to_scene = true
 resource_name = "SanityRecovery"
 script = ExtResource("5_gj6m4")
@@ -117,32 +99,10 @@ CostMultiplier = 1.6
 ModifierValue = 8.0
 ModifierMultiplier = 1.25
 
-[node name="Hunger" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-UpgradeStat = SubResource("Resource_gj6m4")
-upgradeName = "Max Hunger"
-BaseCost = 12.0
-CostMultiplier = 1.6
-ModifierValue = 8.0
-ModifierMultiplier = 1.25
-
-[node name="Hunger Drain" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-UpgradeStat = SubResource("Resource_wiuyi")
-upgradeName = "Hunger Drain Speed"
-ModifierType = 3
-BaseCost = 20.0
-CostMultiplier = 1.7
-ModifierValue = 0.05
-ModifierMultiplier = 1.15
-maxLevel = 8
-
 [node name="Sanity Drain" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
 layout_mode = 2
 size_flags_vertical = 3
-UpgradeStat = SubResource("Resource_dy52k")
+UpgradeStat = SubResource("Resource_gj6m4")
 upgradeName = "Sanity Drain Speed"
 ModifierType = 3
 BaseCost = 18.0
@@ -154,7 +114,7 @@ maxLevel = 8
 [node name="Sanity Recovery" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
 layout_mode = 2
 size_flags_vertical = 3
-UpgradeStat = SubResource("Resource_5i55o")
+UpgradeStat = SubResource("Resource_wiuyi")
 upgradeName = "Sanity Recovery"
 ModifierType = 2
 BaseCost = 15.0
