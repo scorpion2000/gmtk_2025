@@ -7,8 +7,8 @@
 [ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="4_31wof"]
 [ext_resource type="Script" uid="uid://cog8ddhnycnp" path="res://scripts/managers/GameManager.gd" id="4_game_manager"]
 [ext_resource type="PackedScene" uid="uid://dql5bk2bqq4ni" path="res://scenes/objects/Altar.tscn" id="5_altar"]
-[ext_resource type="Resource" uid="uid://ck3pd1ewlqnqo" path="res://scripts/StatsSystem/Stats/stat_health.tres" id="5_yc8p4"]
-[ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/stat_speed.tres" id="6_kydae"]
+[ext_resource type="Resource" path="res://scripts/StatsSystem/Stats/stat_health.tres" id="5_yc8p4"]
+[ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/IndividualStats/stat_speed.tres" id="6_kydae"]
 
 [sub_resource type="Resource" id="Resource_3dodf"]
 resource_local_to_scene = true

@@ -14,7 +14,7 @@ func _ready():
 	loopsUpdated(GlobalLoops.LoopsCurrency)
 
 func loopsUpdated(newLoops : float):
-	%CurrencyLabel.text = str(newLoops)
+	%CurrencyLabel.text = str(int(newLoops))
 
 func setTexture(newTexture : Texture2D):
 	%CurrencyImage.texture = newTexture

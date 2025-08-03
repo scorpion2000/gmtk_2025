@@ -12,9 +12,6 @@ var player: Player
 var roomManager: RoomManager
 var isHungerDraining: bool = true
 var isSanityDraining: bool = false
-var hungerDrainRate: float = 2.0    # Hunger points per second
-var sanityDrainRate: float = 2.0    # Sanity points per second
-var sanityRecoveryRate: float = 1.0 # Sanity points per second in safe areas
 var sanityDrainTimer: float = 0.0   # Remaining time for an active drain event
 
 # --- Buff System ---
@@ -35,7 +32,10 @@ var LoopCount: int = 0:
 
 # References to individual stats for fast access.
 var hungerStat: Stat
+var hungerDrain: Stat
 var sanityStat: Stat
+var sanityDrain: Stat
+var sanityRecovery: Stat
 
 func CollectLoop(amount: int) -> void:
 	LoopCount += amount
@@ -44,7 +44,6 @@ func _ready() -> void:
 	add_to_group("GameManager")
 	# Locate the player either by direct node name or group.
 	player = get_tree().get_first_node_in_group("player") as Player
-	
 	timeStart = Time.get_ticks_msec()
 	setupRoomSystem()
 	setupHudConnections()
@@ -75,12 +74,12 @@ func _process(delta: float) -> void:
 # Apply hunger drain through the stat system.
 func processHungerDrain(delta: float) -> void:
 	if !hungerStat: return
-	DamageHunger(hungerDrainRate * delta)
+	DamageHunger(hungerDrain.getValue() * delta)
 
 # Apply sanity drain through the stat system and decrease the timer.
 func processSanityDrain(delta: float) -> void:
 	if sanityStat:
-		DamageSanity(sanityDrainRate * delta)
+		DamageSanity(sanityDrain.getValue() * delta)
 	sanityDrainTimer -= delta
 	if sanityDrainTimer <= 0.0:
 		isSanityDraining = false
@@ -88,7 +87,7 @@ func processSanityDrain(delta: float) -> void:
 # Recover sanity in safe areas by adding to the stat.
 func processSanityRecovery(delta: float) -> void:
 	if !sanityStat: return
-	RestoreSanity(sanityRecoveryRate * delta)
+	RestoreSanity(sanityRecovery.getValue() * delta)
 
 # Begin a temporary sanity drain event for the specified duration.
 func TriggerSanityDrainEvent(duration: float) -> void:
@@ -179,11 +178,10 @@ func setupHudConnections() -> void:
 func setupStatsReferences() -> void:
 	var statsListRef := player.Stats
 	hungerStat = statsListRef.getStatRef("hunger") as Stat
+	hungerDrain = statsListRef.getStatRef("hungerdrain") as Stat
 	sanityStat = statsListRef.getStatRef("sanity") as Stat
-	if !hungerStat:
-		print("Warning: Hunger stat not found in StatsList")
-	if !sanityStat:
-		print("Warning: Sanity stat not found in StatsList")
+	sanityDrain = statsListRef.getStatRef("sanitydrain") as Stat
+	sanityRecovery = statsListRef.getStatRef("sanityrecovery") as Stat
 
 # Trigger game over via the StateManager and show the end screen on the UI
 func onSanityDepleted() -> void:

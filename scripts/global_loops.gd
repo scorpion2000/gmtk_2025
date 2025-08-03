@@ -2,7 +2,7 @@ extends Node
 
 signal updateLoops(newLoops : float)
 
-var LoopsCurrency : float = 100:
+var LoopsCurrency : float = 0:
 	set(value):
 		LoopsCurrency = value
 		updateLoops.emit(LoopsCurrency)

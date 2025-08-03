@@ -8,9 +8,12 @@ extends Panel
 	set(value):
 		UpgradeStat = value
 		# Reflect the stat name in the UI when assigned.
-		%StatNameLabel.text = UpgradeStat.resource_name.capitalize()
-		if Engine.is_editor_hint() and UpgradeStat:
-			name = UpgradeStat.resource_name.capitalize() + "Stat"
+		setStatName()
+
+@export var upgradeName : String = "empty":
+	set(value):
+		upgradeName = value
+		setStatName()
 
 # How the upgrade is applied: flat add or percent (multiplicative).
 enum modType { FlatPositive, FlatNegative, PercentPositive, PercentNegative }
@@ -60,7 +63,12 @@ func setCostText():
 		%CostLabel.text = "MAX"
 		GlobalLoops.updateLoops.disconnect(loopsUpdated)
 		return
-	%CostLabel.text = str(statCost)
+	%CostLabel.text = str(int(statCost))
+
+func setStatName():
+	%StatNameLabel.text = upgradeName
+	if !Engine.is_editor_hint() or !UpgradeStat: return
+	name = UpgradeStat.resource_name.capitalize()
 
 # Exponential cost curve: base * multiplier^level.
 func getCurrentCost() -> float:

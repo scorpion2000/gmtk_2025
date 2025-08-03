@@ -70,9 +70,7 @@ func load_video_settings():
 
 # Scene manager
 func switch_scene(scene_name: StringName, curScene : Node):
-	if not scenes.has(scene_name):
-		print("ERROR: Scene '", scene_name, "' not found in scene_map")
-		return
+	if not scenes.has(scene_name): return
 	lastScenePressed = scene_name
 	var current = get_tree().current_scene
 	if current != null and !current.scene_file_path.is_empty():
@@ -88,6 +86,8 @@ func showEnd(reason : String, loops : int, time : float):
 	endReason = reason
 	endLoops = loops
 	endTime = time
+	
+	GlobalLoops.addLoops(endLoops)
 	
 	get_tree().change_scene_to_file(scenes["End"])
 	await get_tree().create_timer(0.01).timeout

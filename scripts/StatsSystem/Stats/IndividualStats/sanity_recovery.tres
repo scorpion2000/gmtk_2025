@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Stat" load_steps=2 format=3 uid="uid://d0wen6s4dvriq"]
+
+[ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="1_mdmu1"]
+
+[resource]
+resource_local_to_scene = true
+resource_name = "SanityRecovery"
+script = ExtResource("1_mdmu1")
+currentValue = 1.0
+minValue = 0.0
+maxValue = 100.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
