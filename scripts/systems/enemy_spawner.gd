@@ -2,7 +2,7 @@ extends Node
 
 class_name EnemySpawner
 
-@export var startingEnemies: int = 0
+#@export var startingEnemies: int = 0
 @export var spawnArea: NavigationRegion2D
 @export var enemyPrefabs: Array[PackedScene]
 
@@ -12,7 +12,7 @@ func _ready():
 	add_child(spawnTimer)
 	spawnTimer.timeout.connect(createEnemy)
 	await get_tree().physics_frame
-	for x in range(startingEnemies):
+	for x in range(0, 2):
 		createEnemy()
 
 func createEnemy():

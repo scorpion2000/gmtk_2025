@@ -7,9 +7,12 @@
 
 [node name="Basic AI" type="CharacterBody2D"]
 script = ExtResource("1_kwbbm")
+visionSize = 60.0
+visionCycle = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_t6o6c")
+disabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)

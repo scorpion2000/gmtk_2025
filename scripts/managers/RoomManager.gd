@@ -85,6 +85,7 @@ func _start_room_transition():
 		target_spawn_position = _get_door_spawn_position(opposite_direction)
 	
 	transition_target_position = target_spawn_position
+	printt(target_spawn_position)
 	
 	if transition_tween:
 		transition_tween.kill()

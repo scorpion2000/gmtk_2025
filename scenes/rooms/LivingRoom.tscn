@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=4 uid="uid://bw2shp8k6x8nc"]
+[gd_scene load_steps=14 format=4 uid="uid://bw2shp8k6x8nc"]
 
 [ext_resource type="Texture2D" uid="uid://csr2ga5wwo830" path="res://assets/Art/tilemaps/Room_Builder_16x16.png" id="1_m5uh3"]
 [ext_resource type="Texture2D" uid="uid://d2xojc58h0kfo" path="res://assets/Art/tilemaps/4_Bedroom_16x16.png" id="2_eafcu"]
 [ext_resource type="Texture2D" uid="uid://dnhst76bw3im0" path="res://assets/Art/tilemaps/12_Kitchen_16x16.png" id="3_rdbsd"]
 [ext_resource type="Texture2D" uid="uid://uiw65bmtnl03" path="res://assets/Art/tilemaps/2_LivingRoom_16x16.png" id="4_eafcu"]
+[ext_resource type="Script" uid="uid://k56474peigy3" path="res://scripts/systems/enemy_spawner.gd" id="5_4tfso"]
+[ext_resource type="PackedScene" uid="uid://dw34a7cwmvlfq" path="res://scenes/entities/basic_ai.tscn" id="6_37d08"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(60, 60)
@@ -6533,6 +6535,11 @@ sources/1 = SubResource("TileSetAtlasSource_37d08")
 sources/2 = SubResource("TileSetAtlasSource_spoph")
 sources/3 = SubResource("TileSetAtlasSource_rdbsd")
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_spoph"]
+vertices = PackedVector2Array(43, -78, 43, -109, 109, -109, 109, -42, 79, -42, 79, 43, 109, 43, 109, 109, 44, 109, 44, 79, -43, 79, -43, 110, -109, 110, -109, 43, -78, 43, -78, -42, -110, -42, -110, -109, -43, -109, -43, -78)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4), PackedInt32Array(5, 6, 7, 8, 9), PackedInt32Array(10, 11, 12, 13, 14), PackedInt32Array(15, 16, 17, 18, 19), PackedInt32Array(14, 15, 19, 0, 4, 5, 9, 10)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-120, -119, -120, -32, -88, -32, -88, 33, -119, 33, -119, 120, -33, 120, -33, 89, 34, 89, 34, 119, 119, 119, 119, 33, 89, 33, 89, -32, 119, -32, 119, -119, 33, -119, 33, -88, -33, -88, -33, -119)])
+
 [node name="LivingRoom" type="Node2D"]
 
 [node name="Background" type="ColorRect" parent="."]
@@ -6641,3 +6648,11 @@ tile_set = SubResource("TileSet_yrgq3")
 [node name="Props2" type="TileMapLayer" parent="Floor"]
 tile_map_data = PackedByteArray("AAD8/wAAAwAJABIAAAD8/wEAAwAJABMAAAAEAAAAAwAJABIAAAAEAAEAAwAJABMAAAA=")
 tile_set = SubResource("TileSet_yrgq3")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_spoph")
+
+[node name="EnemySpawner" type="Node" parent="." node_paths=PackedStringArray("spawnArea")]
+script = ExtResource("5_4tfso")
+spawnArea = NodePath("../NavigationRegion2D")
+enemyPrefabs = Array[PackedScene]([ExtResource("6_37d08")])

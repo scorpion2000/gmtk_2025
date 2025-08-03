@@ -1,9 +1,8 @@
-[gd_scene load_steps=58 format=3 uid="uid://crxkwec23uy8l"]
+[gd_scene load_steps=57 format=3 uid="uid://crxkwec23uy8l"]
 
 [ext_resource type="Script" uid="uid://jok0u6dx1itc" path="res://scripts/managers/GameManagerTest.gd" id="1_6uqi0"]
 [ext_resource type="Script" uid="uid://kfeikg0cntwe" path="res://scripts/managers/RoomManagerTest.gd" id="2_ppyta"]
 [ext_resource type="Script" uid="uid://qsdn436nm7ik" path="res://scripts/player/playertest.gd" id="3_ppyta"]
-[ext_resource type="Script" uid="uid://c8porc2rhf8uh" path="res://scripts/player/player.gd" id="3_ykrsh"]
 [ext_resource type="Texture2D" uid="uid://dnf8fisxirocc" path="res://assets/Art/player/spritesheet(1).png" id="5_g14j6"]
 [ext_resource type="Texture2D" uid="uid://buj7xjhkamhmd" path="res://assets/Art/player/spritesheet.png" id="6_vbegm"]
 [ext_resource type="Script" uid="uid://fgpceum8do7h" path="res://scripts/room_system/GameCamera.gd" id="7_vbegm"]
@@ -397,6 +396,7 @@ animations = [{
 [node name="Test" type="Node2D"]
 
 [node name="GameManagerTest" type="Node2D" parent="."]
+position = Vector2(0, -1)
 script = ExtResource("1_6uqi0")
 roomManagerPath = NodePath("../RoomManagerTest")
 playerPath = NodePath("../PlayerTest")
@@ -406,7 +406,7 @@ script = ExtResource("2_ppyta")
 
 [node name="PlayerTest" type="CharacterBody2D" parent="."]
 script = ExtResource("3_ppyta")
-metadata/_custom_type_script = ExtResource("3_ykrsh")
+metadata/_custom_type_script = "uid://c8porc2rhf8uh"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="PlayerTest"]
 sprite_frames = SubResource("SpriteFrames_lw7xf")

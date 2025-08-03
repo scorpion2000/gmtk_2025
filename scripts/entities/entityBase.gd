@@ -4,14 +4,27 @@ class_name EntityBase
 
 enum AnimationState
 {
-	Idle,
-	Walk,
-	Run,
-	Attack
+	IdleDown,
+	IdleLeft,
+	IdleRight,
+	IdleUp,
+	WalkDown,
+	WalkLeft,
+	WalkRight,
+	WalkUp,
+	RunDown,
+	RunLeft,
+	RunRight,
+	RunUp,
+	Attack,
+	RummageDown,
+	RummageLeft,
+	RummageRight,
+	RummageUp,
 }
 
 @export var animationStates: Dictionary[AnimationState, String]
-@export var animationPlayer: AnimationPlayer
+@export var animationPlayer: AnimatedSprite2D
 @export var enableVision: bool = true
 @export var visionSize: float = 150
 @export var visionCycle: float = 0.25
@@ -22,21 +35,22 @@ var vision: Area2D = Area2D.new()
 var visionShape: CircleShape2D = CircleShape2D.new()
 var visionCollision: CollisionShape2D = CollisionShape2D.new()
 var visionTimer: Timer = Timer.new()
+var flipped: bool = false
 
 func _ready():
 	set_physics_process(false)
 	if animationPlayer != null:
 		animationPlayer.animation_finished.connect(playNextAnimation)
-		if (animationStates.has(AnimationState.Idle)):
-			animationPlayer.play(animationStates[AnimationState.Idle])
-			nextAnimation = AnimationState.Idle
+		if (animationStates.has(AnimationState.IdleDown)):
+			animationPlayer.play(animationStates[AnimationState.IdleDown])
+			nextAnimation = AnimationState.IdleDown
 	createVision()
 	_start()
 
 func _start():
 	pass
 
-func ChangeAnimationState(_animation: AnimationState, _forced: bool):
+func ChangeAnimationState(_animation: AnimationState, _forced: bool, _flipped: bool = false):
 	if (animationPlayer == null):
 		print("Animation Player is missing, but animation state change was called!")
 		return
@@ -44,7 +58,10 @@ func ChangeAnimationState(_animation: AnimationState, _forced: bool):
 		print("Animation Player was forced to play an unset animation type!" + AnimationState.keys()[_animation] + " on " + self.name)
 		return
 	nextAnimation = _animation
+	flipped = _flipped
 	if (_forced):
+		if _flipped:
+			animationPlayer.sprite_frames
 		animationPlayer.play(animationStates[_animation])
 
 func playNextAnimation():

@@ -69,14 +69,11 @@ func activateVision():
 	spottedEntity(null)
 
 func spottedEntity(_entity: EntityBase):
-	if _entity != null: print(_entity)
-	if _entity == null: print("null entity seen")
-	if targetEntity != null && _entity == null: #Target Reset
-		targetEntity = _entity
-		chasing = false
+	if _entity == null:
 		return
-	if targetEntity == null && _entity == null: return
-	if targetEntity == null && _entity != null: targetEntity = _entity
-	chasing = true
-	print("asd")
-	AddNewNavigationTarget(targetEntity.global_position)
+	print("Removing sanity from the player")
+	_entity = _entity as Player
+	var _stat: Stat = _entity.Stats.getStatRef("sanitydrain") as Stat
+	var newModifyer: StatModifier = StatModifier.MultiplyValueModifier.new()
+	newModifyer.factor = 0.02
+	_stat.addModifier(newModifyer)
