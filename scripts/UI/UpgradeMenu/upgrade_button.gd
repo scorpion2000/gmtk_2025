@@ -63,7 +63,7 @@ func setCostText():
 		%CostLabel.text = "MAX"
 		GlobalLoops.updateLoops.disconnect(loopsUpdated)
 		return
-	%CostLabel.text = str(statCost)
+	%CostLabel.text = str(int(statCost))
 
 func setStatName():
 	%StatNameLabel.text = upgradeName
