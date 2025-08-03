@@ -27,12 +27,12 @@ func _ready():
 	self.add_child(collision)
 
 	# Check for noise reduction buff
-	var final_noise_size = noiseSize
+	var final_noise_size = noiseSize as int
 	var game_manager = get_tree().get_first_node_in_group("GameManager") as GameManager
 	if game_manager and game_manager.noiseReductionActive:
 		var reduced_size = int(noiseSize * game_manager.getNoiseReductionMultiplier())
 		# Convert back to NoiseSize enum
-		final_noise_size = reduced_size as NoiseSize
+		final_noise_size = reduced_size #as NoiseSize
 
 	shape.radius = final_noise_size
 	collision.shape = shape
