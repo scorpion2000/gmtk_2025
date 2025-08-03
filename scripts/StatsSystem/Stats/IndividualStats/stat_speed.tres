@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="1_7fm3p"]
 
 [resource]
+resource_local_to_scene = true
 resource_name = "Speed"
 script = ExtResource("1_7fm3p")
 currentValue = 100.0

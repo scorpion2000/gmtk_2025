@@ -10,9 +10,7 @@ signal loopsUpdated(newValue: int)
 # --- Settings & timers ---
 var player: Player
 var roomManager: RoomManager
-var isHungerDraining: bool = true
-var isSanityDraining: bool = false
-var sanityDrainTimer: float = 0.0   # Remaining time for an active drain event
+var isSanityDraining: bool = true
 
 # --- Buff System ---
 var noiseReductionActive: bool = false
@@ -31,8 +29,6 @@ var LoopCount: int = 0:
 		loopsUpdated.emit(LoopCount)
 
 # References to individual stats for fast access.
-var hungerStat: Stat
-var hungerDrain: Stat
 var sanityStat: Stat
 var sanityDrain: Stat
 var sanityRecovery: Stat
@@ -58,65 +54,31 @@ func _notification(what: int) -> void:
 		timePausedStart = -1
 
 func _process(delta: float) -> void:
-	# If stats are not set up or game is paused, skip processing
-	if !hungerStat or !sanityStat: return
+	if !sanityStat: return
 	
-	# Drain hunger every frame if enabled.
-	if isHungerDraining:
-		processHungerDrain(delta)
-	
-	# Drain sanity during an active drain event.
 	if isSanityDraining:
 		processSanityDrain(delta)
 	elif isPlayerInSafeArea():
 		processSanityRecovery(delta)
 
-# Apply hunger drain through the stat system.
-func processHungerDrain(delta: float) -> void:
-	if !hungerStat: return
-	DamageHunger(hungerDrain.getValue() * delta)
-
-# Apply sanity drain through the stat system and decrease the timer.
+# Apply sanity drain through the stat system.
 func processSanityDrain(delta: float) -> void:
-	if sanityStat:
-		DamageSanity(sanityDrain.getValue() * delta)
-	sanityDrainTimer -= delta
-	if sanityDrainTimer <= 0.0:
-		isSanityDraining = false
+	DamageSanity(sanityDrain.getValue() * delta)
 
 # Recover sanity in safe areas by adding to the stat.
 func processSanityRecovery(delta: float) -> void:
-	if !sanityStat: return
+	if !sanityRecovery: return
 	RestoreSanity(sanityRecovery.getValue() * delta)
-
-# Begin a temporary sanity drain event for the specified duration.
-func TriggerSanityDrainEvent(duration: float) -> void:
-	isSanityDraining = true
-	sanityDrainTimer = max(duration, 0.0)
 
 # Utility for directly reducing sanity
 func DamageSanity(amount: float) -> void:
-	if !sanityStat: return
 	sanityStat.subtractValue(amount)
 
-# Utility for directly reducing hunger
-func DamageHunger(amount: float) -> void:
-	if !hungerStat: return
-	hungerStat.subtractValue(amount)
-
-# Utility for directly restoring sanity
+# Utility for directly restoring sanity via stat
 func RestoreSanity(amount: float) -> void:
-	if !sanityStat: return
 	sanityStat.addValue(amount)
 
-# Utility for directly restoring hunger via stat
-func RestoreHunger(amount: float) -> void:
-	if !hungerStat: return
-	hungerStat.addValue(amount)
-
 func isPlayerInSafeArea() -> bool:
-	# TODO: Replace this placeholder with the actual logic that determines
-	# whether the player is currently in a safe area
 	return false
 
 func setupRoomSystem() -> void:
@@ -127,7 +89,6 @@ func setupRoomSystem() -> void:
 	if player and roomManager:
 		roomManager.initialize_rooms(player)
 		roomManager.room_changed.connect(onRoomChanged)
-		roomManager.room_cleared.connect(onRoomCleared)
 		# Defer minimap setup until the RoomManager has generated level data
 		call_deferred("setupMinimap")
 	else:
@@ -142,25 +103,6 @@ func onRoomChanged(newRoom: RoomData) -> void:
 	# Update the minimap on the HUD
 	if HudReference:
 		HudReference.updateMinimapRoom(newRoom)
-	# Trigger sanity drain based on room properties
-	match newRoom.room_type:
-		RoomData.RoomType.BEDROOM:
-			TriggerSanityDrainEvent(1.5)
-		RoomData.RoomType.LIVING_ROOM:
-			if not newRoom.is_cleared:
-				TriggerSanityDrainEvent(1.0)
-
-func onRoomCleared(room: RoomData) -> void:
-	# Reward the player for clearing rooms
-	RestoreSanity(10.0)
-	match room.room_type:
-		RoomData.RoomType.KITCHEN:
-			CollectLoop(5)
-			RestoreHunger(25.0)
-		RoomData.RoomType.SHRINE:
-			pass
-		RoomData.RoomType.BEDROOM:
-			RestoreSanity(15.0)
 
 # --- HUD and end‑game ---
 func setupHudConnections() -> void:
@@ -170,39 +112,20 @@ func setupHudConnections() -> void:
 	loopsUpdated.connect(HudReference.updateLoopDisplay)
 	HudReference.updateLoopDisplay(LoopCount)
 	HudReference.SanityDepleted.connect(onSanityDepleted)
-	HudReference.HungerDepleted.connect(onHungerDepleted)
-	HudReference.SanityCritical.connect(onSanityCritical)
-	HudReference.HungerCritical.connect(onHungerCritical)
 
 # Assign references to individual stats from the StatsList.
 func setupStatsReferences() -> void:
 	var statsListRef := player.Stats
-	hungerStat = statsListRef.getStatRef("hunger") as Stat
-	hungerDrain = statsListRef.getStatRef("hungerdrain") as Stat
 	sanityStat = statsListRef.getStatRef("sanity") as Stat
 	sanityDrain = statsListRef.getStatRef("sanitydrain") as Stat
 	sanityRecovery = statsListRef.getStatRef("sanityrecovery") as Stat
 
-# Trigger game over via the StateManager and show the end screen on the UI
 func onSanityDepleted() -> void:
 	StateManager.SetGameOverState()
 	var reason = "Sanity depleted!"
 	var loopsCollected = LoopCount
 	var secondsSurvived = getActiveSeconds()
 	Utilities.showEnd(reason, loopsCollected, secondsSurvived)
-
-func onHungerDepleted() -> void:
-	StateManager.SetGameOverState()
-	var reason = "Hunger depleted!"
-	var loopsCollected = LoopCount
-	var secondsSurvived = getActiveSeconds()
-	Utilities.showEnd(reason, loopsCollected, secondsSurvived)
-
-func onSanityCritical(_currentValue: float) -> void:
-	pass
-
-func onHungerCritical(_currentValue: float) -> void:
-	pass
 
 ## Compute the total time the player has been active, subtracting pause time
 func getActiveSeconds() -> float:

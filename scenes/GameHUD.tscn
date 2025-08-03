@@ -27,9 +27,9 @@ anchors_preset = -1
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
-offset_top = -141.0
+offset_top = -93.0
 offset_right = 296.0
-offset_bottom = -21.0001
+offset_bottom = -18.0
 
 [node name="LoopCounter" type="Label" parent="TopLeftContainer"]
 unique_name_in_owner = true
@@ -57,27 +57,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.3, 0.7, 1, 1)
-
-[node name="HungerBarContainer" type="VBoxContainer" parent="TopLeftContainer"]
-layout_mode = 2
-
-[node name="HungerLabel" type="Label" parent="TopLeftContainer/HungerBarContainer"]
-layout_mode = 2
-text = "Hunger"
-
-[node name="HungerBarBackground" type="ColorRect" parent="TopLeftContainer/HungerBarContainer"]
-custom_minimum_size = Vector2(200, 16)
-layout_mode = 2
-color = Color(0.2, 0.2, 0.2, 1)
-
-[node name="HungerBarFill" type="ColorRect" parent="TopLeftContainer/HungerBarContainer/HungerBarBackground"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 0.5, 0.2, 1)
 
 [node name="MiniMap" type="Control" parent="."]
 layout_mode = 1

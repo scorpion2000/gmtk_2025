@@ -4,7 +4,6 @@ class_name GameHUD
 # Node references (cached on ready)
 @onready var LoopCounterLabel: Label = %LoopCounter
 @onready var SanityBarFill: ColorRect = $TopLeftContainer/SanityBarContainer/SanityBarBackground/SanityBarFill
-@onready var HungerBarFill: ColorRect = $TopLeftContainer/HungerBarContainer/HungerBarBackground/HungerBarFill
 @onready var miniMap: MiniMap = $MiniMap
 @onready var InteractionContainer: Control = $InteractionContainer
 @onready var CircularProgressBar: Control = $InteractionContainer/CircularProgressBar
@@ -20,13 +19,8 @@ class_name GameHUD
 
 # Signals for notifying game logic when thresholds are crossed
 signal SanityDepleted
-signal HungerDepleted
-signal SanityCritical(currentvalue: float)
-signal HungerCritical(currentValue: float)
 
-# Reference to the StatsList containing hunger and sanity stats.
 var statSanity : Stat
-var statHunger : Stat
 
 func _ready() -> void:
 	add_to_group("hud")
@@ -40,17 +34,12 @@ func initialSetup() -> void:
 	if !StatsListRef: return
 	
 	statSanity = StatsListRef.getStatRef("sanity")
-	statHunger = StatsListRef.getStatRef("hunger")
 	if statSanity:
 		if !statSanity.statChanged.is_connected(onSanityUpdated):
 			statSanity.statChanged.connect(onSanityUpdated)
 		updateSanityBar()
 		checkSanityThresholds()
-	if statHunger:
-		if !statHunger.statChanged.is_connected(onHungerUpdated):
-			statHunger.statChanged.connect(onHungerUpdated)
-		updateHungerBar()
-		checkHungerThresholds()
+		print("found sanity")
 
 # --- Public API ---
 func updateLoopDisplay(newValue: int) -> void:
@@ -96,36 +85,13 @@ func updateSanityBar() -> void:
 	else:
 		SanityBarFill.color = Color(1.0, 0.2, 0.2)    # Red – critical
 
-func updateHungerBar() -> void:
-	if !HungerBarFill: return
-	var percentage: float = statHunger.getPercentage()
-	HungerBarFill.anchor_right = percentage
-	if percentage > 0.5:
-		HungerBarFill.color = Color(1.0, 0.5, 0.2)    # Orange – satisfied
-	elif percentage > 0.25:
-		HungerBarFill.color = Color(1.0, 0.8, 0.2)    # Yellow – getting hungry
-	else:
-		HungerBarFill.color = Color(1.0, 0.2, 0.2)    # Red – starving
-
 func checkSanityThresholds() -> void:
 	if statSanity.getValue() <= statSanity.getMinValue():
 		SanityDepleted.emit()
-	elif statSanity.getPercentage() <= 0.25:
-		SanityCritical.emit(statSanity.getValue())
-
-func checkHungerThresholds() -> void:
-	if statHunger.getValue() <= statHunger.getMinValue():
-		HungerDepleted.emit()
-	elif statHunger.getPercentage() <= 0.25:
-		HungerCritical.emit(statHunger.getValue())
 
 func onSanityUpdated(_statName : String, _newValue: float):
 	updateSanityBar()
 	checkSanityThresholds()
-
-func onHungerUpdated(_statName : String, _newValue: float):
-	updateHungerBar()
-	checkHungerThresholds()
 
 # Buff icon management functions
 func showSpeedBuff() -> void:
