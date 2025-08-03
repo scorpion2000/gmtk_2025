@@ -48,3 +48,7 @@ func _physics_process(delta: float):
 		velocity = velocity.move_toward(Vector2.ZERO, friction * current_speed * delta)
 	
 	move_and_slide()
+
+func loadStats():
+	pass
+	

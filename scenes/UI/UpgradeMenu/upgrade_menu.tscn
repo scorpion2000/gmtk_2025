@@ -65,30 +65,6 @@ layout_mode = 2
 size_flags_vertical = 3
 UpgradeStat = ExtResource("5_lkyoy")
 
-[node name="Stat3" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Stat4" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Stat5" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Stat6" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Stat7" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="Stat8" parent="VBox/Margin/VBoxContainer/StatsContainer" instance=ExtResource("1_8qoat")]
-layout_mode = 2
-size_flags_vertical = 3
-
 [node name="HSeparator" type="HSeparator" parent="VBox"]
 layout_mode = 2
 
@@ -97,13 +73,15 @@ layout_mode = 2
 
 [node name="RetryBtn" type="Button" parent="VBox/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4
-text = "Back"
+text = "Retry"
 
 [node name="BackBtn" type="Button" parent="VBox/HBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 4

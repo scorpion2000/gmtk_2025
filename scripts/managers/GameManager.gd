@@ -6,7 +6,6 @@ signal loopsUpdated(newValue: int)
 
 # --- Public References ---
 @export var HudReference: GameHUD
-@export var UiManager: UIManager
 
 # --- Settings & timers ---
 var player: Player
@@ -14,7 +13,7 @@ var roomManager: RoomManager
 var isHungerDraining: bool = true
 var isSanityDraining: bool = false
 var hungerDrainRate: float = 2.0    # Hunger points per second
-var sanityDrainRate: float = 5.0    # Sanity points per second
+var sanityDrainRate: float = 2.0    # Sanity points per second
 var sanityRecoveryRate: float = 1.0 # Sanity points per second in safe areas
 var sanityDrainTimer: float = 0.0   # Remaining time for an active drain event
 
@@ -192,16 +191,14 @@ func onSanityDepleted() -> void:
 	var reason = "Sanity depleted!"
 	var loopsCollected = LoopCount
 	var secondsSurvived = getActiveSeconds()
-	if !UiManager: return
-	UiManager.showEnd(reason, loopsCollected, secondsSurvived)
+	Utilities.showEnd(reason, loopsCollected, secondsSurvived)
 
 func onHungerDepleted() -> void:
 	StateManager.SetGameOverState()
 	var reason = "Hunger depleted!"
 	var loopsCollected = LoopCount
 	var secondsSurvived = getActiveSeconds()
-	if !UiManager: return
-	UiManager.showEnd(reason, loopsCollected, secondsSurvived)
+	Utilities.showEnd(reason, loopsCollected, secondsSurvived)
 
 func onSanityCritical(_currentValue: float) -> void:
 	pass

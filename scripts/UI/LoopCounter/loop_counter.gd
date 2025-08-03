@@ -11,7 +11,6 @@ func _ready():
 	if Engine.is_editor_hint(): return
 	
 	GlobalLoops.updateLoops.connect(loopsUpdated)
-	# Initialize the currency.
 	loopsUpdated(GlobalLoops.LoopsCurrency)
 
 func loopsUpdated(newLoops : float):

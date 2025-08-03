@@ -2,26 +2,46 @@
 class_name UpgradeMenu
 extends Panel
 
-signal retryPressed()
-signal backPressed()
+@export var StatList : StatsList
 
-var StatList : StatsList
+var upgrade_buttons : Array[UpgradeButton]
 
 func _ready():
-	var player : Player = get_tree().get_first_node_in_group("player")
-	StatList = player.Stats
-	
+	loadButtons()
 	%RetryBtn.pressed.connect(onRetryPressed)
 	%BackBtn.pressed.connect(onBackPressed)
-	## Example of how to get and add stats
-	#print("Health: ", StatList.getStatValue("health"))
-	#var health : Stat = StatList.getStatRef("health")
-	#health.addValue(10)
-	#print("Health: ", StatList.getStatValue("health"))
-	pass
+
+func _exit_tree() -> void:
+	saveButtons()
 
 func onRetryPressed() -> void:
-	retryPressed.emit()
+	Utilities.switch_scene("Game", self)
 
 func onBackPressed() -> void:
-	backPressed.emit()
+	if Utilities.lastScenePressed == "End":
+		Utilities.backShowEnd()
+	else:
+		Utilities.go_back()
+
+func saveButtons():
+	var buttonList : Array[UpgradeButton]
+	for item in %StatsContainer.get_children():
+		if item is UpgradeButton:
+			buttonList.append(item)
+	Utilities.save_stat_upgrades(buttonList)
+
+func loadButtons():
+	var buttonList : Array[UpgradeButton]
+	for item in %StatsContainer.get_children():
+		if item is UpgradeButton:
+			buttonList.append(item)
+	var upgrade_data := Utilities.upgrade_save_data
+	
+	for btn in buttonList:
+		var key := btn.UpgradeStat.resource_name
+		if upgrade_data.has(key):
+			var saved: Dictionary = upgrade_data[key]
+			var target_level := int(saved.get("level", 0))
+			btn.UpgradeStat.setValue(btn.UpgradeStat.currentValue)
+			for i in range(target_level):
+				btn.upgradeButton()

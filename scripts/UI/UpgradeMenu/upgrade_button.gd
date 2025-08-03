@@ -13,8 +13,8 @@ extends Panel
 			name = UpgradeStat.resource_name.capitalize() + "Stat"
 
 # How the upgrade is applied: flat add or percent (multiplicative).
-enum modType { Flat, Percent }
-@export var ModifierType: modType = modType.Flat
+enum modType { FlatPositive, FlatNegative, PercentPositive, PercentNegative }
+@export var ModifierType: modType = modType.FlatPositive
 
 # ---------- Cost scaling settings ----------
 # Starting cost of the first upgrade.
@@ -28,6 +28,7 @@ enum modType { Flat, Percent }
 # Exponential multiplier per level for effect growth.
 @export var ModifierMultiplier: float = 1.2
 
+@export var maxLevel : int = 10
 # Current upgrade level shown on the button.
 var level: int = 0:
 	set(value):
@@ -38,7 +39,7 @@ var level: int = 0:
 var statCost: float:
 	set(newValue):
 		statCost = newValue
-		%CostLabel.text = str(statCost)
+		setCostText()
 
 # ---------- Lifecycle ----------
 func _ready() -> void:
@@ -51,8 +52,16 @@ func _ready() -> void:
 	GlobalLoops.updateLoops.connect(loopsUpdated)
 	# Make sure level label matches the starting value.
 	%LvlLabel.text = str(level)
+	setCostText()
 
 # ---------- Helpers ----------
+func setCostText():
+	if level >= maxLevel:
+		%CostLabel.text = "MAX"
+		GlobalLoops.updateLoops.disconnect(loopsUpdated)
+		return
+	%CostLabel.text = str(statCost)
+
 # Exponential cost curve: base * multiplier^level.
 func getCurrentCost() -> float:
 	return BaseCost * pow(CostMultiplier, level)
@@ -63,7 +72,7 @@ func getCurrentIncrease() -> float:
 
 # Can the player afford the next upgrade right now.
 func canUpgrade() -> bool:
-	return GlobalLoops.LoopsCurrency >= statCost
+	return GlobalLoops.LoopsCurrency >= statCost and level <= maxLevel
 
 # Update currency label when the global currency changes.
 func loopsUpdated(_newLoops : float):
@@ -72,24 +81,27 @@ func loopsUpdated(_newLoops : float):
 # ---------- Interaction ----------
 func onButtonClick() -> void:
 	# Guard: Export variable UpgradeStat must be set, must not be in editor and be affordable.
-	if !UpgradeStat or !canUpgrade() and !Engine.is_editor_hint(): 
-		return
+	if !UpgradeStat or !canUpgrade() and !Engine.is_editor_hint(): return
 	
 	# Spend the currency for this upgrade.
 	GlobalLoops.subtractLoops(statCost)
+	upgradeButton()
+
+func upgradeButton():
 	var inc := getCurrentIncrease()
-	
-	# Apply the upgrade according to its type.
 	match ModifierType:
-		modType.Flat:
-			# Flat: add the increase directly to the stat.
+		modType.FlatPositive:
 			UpgradeStat.addValue(inc) 
-		modType.Percent:
-			# Percent: create a multiplicative modifier.
+		modType.FlatNegative:
+			# Flat: add the increase directly to the stat.
+			UpgradeStat.subtractValue(inc)
+		modType.PercentPositive:
 			var mod := StatModifier.MultiplyValueModifier.new()
-			mod.factor = 1.0 + inc    # e.g. inc=0.05 → factor 1.05
+			mod.factor = 1.0 + inc
 			UpgradeStat.addModifier(mod)
-	
-	# Level up and recompute the next cost.
+		modType.PercentNegative:
+			var mod := StatModifier.MultiplyValueModifier.new()
+			mod.factor = 1.0 - inc
+			UpgradeStat.addModifier(mod)
 	level += 1 
 	statCost = getCurrentCost()

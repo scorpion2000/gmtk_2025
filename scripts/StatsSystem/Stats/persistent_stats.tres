@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://4viqjd7qx6k3" path="res://scripts/StatsSystem/Stats/stat_hunger.tres" id="6_7ylc1"]
 
 [resource]
+resource_local_to_scene = true
 resource_name = "Persistent Stats"
 script = ExtResource("1_arjlu")
 statsList = Array[ExtResource("2_w81ll")]([ExtResource("3_nljh3"), ExtResource("4_7ylc1"), ExtResource("5_nljh3"), ExtResource("6_7ylc1")])

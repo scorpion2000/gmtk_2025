@@ -10,9 +10,9 @@ signal retryPressed()
 @onready var summaryLabel: Label = %SummaryResults
 
 func _ready() -> void:
-	
+	Utilities.save_data()
 	%RetryBtn.pressed.connect(onRetryPressed)
-	%UpgradeBtn.pressed.connect(onUpgradePressed)
+	%ShopBtn.pressed.connect(onShopPressed)
 	%MenuBtn.pressed.connect(onMenuPressed)
 	%ExitBtn.pressed.connect(onExitPressed)
 
@@ -24,15 +24,19 @@ func showEnd(reason: String, loopsCollected: int, secondsSurvived: float) -> voi
 
 # Buttons are wired in the editor
 func onRetryPressed() -> void:
+	Utilities.switch_scene("Game", self)
 	retryPressed.emit()
 
-func onUpgradePressed() -> void:
+func onShopPressed() -> void:
+	Utilities.switch_scene("Shop", self)
 	upgradePressed.emit()
 
 func onMenuPressed() -> void:
+	Utilities.switch_scene("Menu", self)
 	menuPressed.emit()
 
 func onExitPressed() -> void:
+	get_tree().quit()
 	exitPressed.emit()
 
 func fmtTime(t: float) -> String:

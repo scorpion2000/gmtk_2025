@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="1_r43do"]
 
 [resource]
+resource_local_to_scene = true
 resource_name = "Hunger"
 script = ExtResource("1_r43do")
 currentValue = 100.0

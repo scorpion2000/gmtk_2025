@@ -1,16 +1,46 @@
-[gd_scene load_steps=6 format=3 uid="uid://cle6s5xvi707"]
+[gd_scene load_steps=13 format=3 uid="uid://cle6s5xvi707"]
 
 [ext_resource type="PackedScene" uid="uid://ckgf4x4ssqojg" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://bvk8x7p2qm1n8" path="res://scenes/GameHUD.tscn" id="2_hud"]
 [ext_resource type="PackedScene" uid="uid://cy8oav5o3q0sr" path="res://scenes/objects/SearchableObject.tscn" id="3_searchable"]
+[ext_resource type="Script" uid="uid://ba21q6eugodl6" path="res://scripts/StatsSystem/stats_list.gd" id="3_uop3g"]
+[ext_resource type="Script" uid="uid://dx24qqcspn7tv" path="res://scripts/StatsSystem/stat.gd" id="4_31wof"]
 [ext_resource type="Script" uid="uid://cog8ddhnycnp" path="res://scripts/managers/GameManager.gd" id="4_game_manager"]
 [ext_resource type="PackedScene" uid="uid://dql5bk2bqq4ni" path="res://scenes/objects/Altar.tscn" id="5_altar"]
+[ext_resource type="Resource" uid="uid://ck3pd1ewlqnqo" path="res://scripts/StatsSystem/Stats/stat_health.tres" id="5_yc8p4"]
+[ext_resource type="Resource" uid="uid://788h7wh4k84y" path="res://scripts/StatsSystem/Stats/stat_speed.tres" id="6_kydae"]
+
+[sub_resource type="Resource" id="Resource_3dodf"]
+resource_local_to_scene = true
+resource_name = "Sanity"
+script = ExtResource("4_31wof")
+currentValue = 100.0
+minValue = 0.0
+maxValue = 100.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
+
+[sub_resource type="Resource" id="Resource_gg37t"]
+resource_local_to_scene = true
+resource_name = "Hunger"
+script = ExtResource("4_31wof")
+currentValue = 100.0
+minValue = 0.0
+maxValue = 100.0
+metadata/_custom_type_script = "uid://dx24qqcspn7tv"
+
+[sub_resource type="Resource" id="Resource_hytc4"]
+resource_local_to_scene = true
+resource_name = "Persistent Stats"
+script = ExtResource("3_uop3g")
+statsList = Array[ExtResource("4_31wof")]([ExtResource("5_yc8p4"), ExtResource("6_kydae"), SubResource("Resource_3dodf"), SubResource("Resource_gg37t")])
+metadata/_custom_type_script = "uid://ba21q6eugodl6"
 
 [node name="InteractableTest" type="Node2D" node_paths=PackedStringArray("HudReference")]
 script = ExtResource("4_game_manager")
 HudReference = NodePath("CanvasLayer/GameHUD")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
+Stats = SubResource("Resource_hytc4")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

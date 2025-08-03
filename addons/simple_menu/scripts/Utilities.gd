@@ -1,19 +1,30 @@
 extends Node
 
 # Scene manager
-@export var scenes: Array[PackedScene] = []
-@export var scene_map: Dictionary = {}
-@export var is_persistence: bool = false
+
+var scenes: Dictionary = {
+	Menu = "res://addons/simple_menu/scenes/main_menu.tscn",
+	Game = "res://scenes/game.tscn",
+	Shop = "res://scenes/UI/UpgradeMenu/upgrade_menu.tscn",
+	End = "res://scenes/UI/EndScreen/end_screen.tscn"
+}
 
 const PATH = "user://settings.cfg"
+var lastScenePressed : String = "Menu"
+var upgrade_save_data: Dictionary = {}
 var config: ConfigFile
+var history: Array = []
+
+var endReason
+var endLoops
+var endTime
 
 func _ready():
 	config = ConfigFile.new()
 	for action in InputMap.get_actions():
 		if InputMap.action_get_events(action).size() != 0:
 			config.set_value("Controls", action, InputMap.action_get_events(action)[0])
-
+	
 	config.set_value("Video", "fullscreen", DisplayServer.WINDOW_MODE_WINDOWED)
 	config.set_value("Video", "borderless", false)
 	config.set_value("Video", "vsync", DisplayServer.VSYNC_ENABLED)
@@ -21,13 +32,13 @@ func _ready():
 	for i in range(3):
 		config.set_value("Audio", str(i), 0.5)
 
-	if is_persistence:
-		load_data()
+	load_data()
 
 # Persistence
 func save_data():
-	if is_persistence:
-		config.save(PATH)
+	config.set_value("Upgrades", "data", upgrade_save_data)
+	config.set_value("Loop", "Loop", GlobalLoops.LoopsCurrency)
+	config.save(PATH)
 
 func load_data():
 	if config.load("user://settings.cfg") != OK:
@@ -35,6 +46,11 @@ func load_data():
 		return
 	load_control_settings()
 	load_video_settings()
+	if config.has_section_key("Upgrades", "data"):
+		upgrade_save_data = config.get_value("Upgrades", "data", {})
+	
+	if config.has_section_key("Loop", "Loop"):
+		GlobalLoops.LoopsCurrency = float(config.get_value("Loop", "Loop"))
 
 func load_control_settings():
 	var keys = config.get_section_keys("Controls")
@@ -53,34 +69,43 @@ func load_video_settings():
 	DisplayServer.window_set_vsync_mode(vsync_index)
 
 # Scene manager
-func switch_scene(scene_name: StringName, cur_scene: Node):
-	print("Attempting to switch to scene: ", scene_name)
-	print("Available scenes in scene_map: ", scene_map.keys())
-	print("scene_map contents: ", scene_map)
-	print("scenes array length: ", scenes.size())
-	
-	if not scene_map.has(scene_name):
+func switch_scene(scene_name: StringName, curScene : Node):
+	if not scenes.has(scene_name):
 		print("ERROR: Scene '", scene_name, "' not found in scene_map")
 		return
+	lastScenePressed = scene_name
+	var current = get_tree().current_scene
+	if current != null and !current.scene_file_path.is_empty():
+		history.push_back(current.scene_file_path)
+	get_tree().change_scene_to_file(scenes[scene_name])
+
+func go_back() -> void:
+	if history.size() > 0:
+		var last_path: String = history.pop_back()
+		get_tree().change_scene_to_file(last_path)
+
+func showEnd(reason : String, loops : int, time : float):
+	endReason = reason
+	endLoops = loops
+	endTime = time
 	
-	var scene_index = scene_map[scene_name]
-	if scene_index >= scenes.size():
-		print("ERROR: Scene index ", scene_index, " is out of bounds. scenes array size: ", scenes.size())
-		return
-	
-	if scenes[scene_index] == null:
-		print("ERROR: Scene at index ", scene_index, " is null")
-		return
-		
-	var scene = scenes[scene_index].instantiate()
-	get_tree().root.add_child(scene)
-	cur_scene.queue_free()
+	get_tree().change_scene_to_file(scenes["End"])
+	await get_tree().create_timer(0.01).timeout
+	var end_node := get_tree().get_first_node_in_group("End") as EndScreen
+	end_node.showEnd(endReason, endLoops, endTime)
 
-func hide_scene(scene):
-	scene.hide()
+func backShowEnd():
+	get_tree().change_scene_to_file(scenes["End"])
+	await get_tree().create_timer(0.01).timeout
+	var end_node := get_tree().get_first_node_in_group("End") as EndScreen
+	end_node.showEnd(endReason, endLoops, endTime)
 
-func remove_scene(scene):
-	get_tree().root.remove_child(scene)
-
-func delete_scene(scene):
-	scene.queue_free()
+func save_stat_upgrades(buttons: Array[UpgradeButton]) -> void:
+	upgrade_save_data.clear()
+	for btn in buttons:
+		var key := btn.UpgradeStat.resource_name
+		upgrade_save_data[key] = {
+			"level": btn.level,
+			"modifier_type": btn.ModifierType,
+		}
+	save_data()
