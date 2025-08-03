@@ -87,6 +87,8 @@ func showEnd(reason : String, loops : int, time : float):
 	endLoops = loops
 	endTime = time
 	
+	GlobalLoops.addLoops(endLoops)
+	
 	get_tree().change_scene_to_file(scenes["End"])
 	await get_tree().create_timer(0.01).timeout
 	var end_node := get_tree().get_first_node_in_group("End") as EndScreen
