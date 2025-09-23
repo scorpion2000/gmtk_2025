@@ -2,6 +2,8 @@ extends EntityBase
 
 class_name AI_Base
 
+#TEST 2
+
 @export var patrolTimer: Vector2i = Vector2i(2,6)
 
 var speed: float = 100
