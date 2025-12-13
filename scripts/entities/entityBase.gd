@@ -98,3 +98,5 @@ func spottedEntity(_entity: EntityBase):
 		
 func seenByEntity(_entity: EntityBase):
 	pass
+
+#asdasd
